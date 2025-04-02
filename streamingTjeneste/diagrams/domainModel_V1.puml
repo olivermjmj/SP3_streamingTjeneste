@@ -1,0 +1,54 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+object Main
+object StreamingService
+object StartMenu
+object Registre
+object Login
+object MainMenu
+
+
+object UserLoginData
+object UserWatchLaterData
+object UserWatchData
+object Logout
+
+object Search
+object ChooseGenre
+object ShowWatched
+object Watch
+object WatchLater
+object chooseToWatchLater
+
+object Select
+
+Main *-- StreamingService
+StreamingService *-- StartMenu
+StartMenu *-- Registre
+StartMenu *-- Login
+Registre *-- StartMenu
+
+StreamingService *- UserLoginData
+Registre <|-- UserLoginData
+Login <|-- UserLoginData
+
+Login *-- MainMenu
+MainMenu *-- Search
+MainMenu *-- ChooseGenre
+MainMenu *-- ShowWatched
+MainMenu *-- WatchLater
+MainMenu *- Logout
+
+Search *-- Select
+ChooseGenre *-- Select
+ShowWatched *-- Select
+WatchLater *-- Select
+Select *-- Watch
+Select *- chooseToWatchLater
+chooseToWatchLater *- UserWatchLaterData
+WatchLater *-- UserWatchLaterData
+Watch *-- UserWatchData
+
+UserWatchData <|- ShowWatched
+@enduml
