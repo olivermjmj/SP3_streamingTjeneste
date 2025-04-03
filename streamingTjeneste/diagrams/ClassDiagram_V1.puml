@@ -1,0 +1,111 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Main {
+    + main(String[] args)
+}
+
+
+class StreamingService {
+    + static User user = null
+    + Start()
+}
+
+class StartMenu {
+    + Login();
+    + Register();
+}
+
+class Register {
+    - name
+    - password
+    - File Writer(csv)
+}
+
+class Login{
+    - name
+    - password
+}
+
+class Watch {
+
+}
+
+class MainMenu{
+    + Search
+    + WatchHistoryDATA / continue watching
+    + Watchlater // UserWatchLaterData
+
+    - Logout
+    - abstract  returnToMainMenu{}
+}
+
+class User {
+    + static User login(name, passwd)
+    + static register(name, passwd)
+    ---
+    + name
+
+    + watchhistory
+    + watchlater
+
+    + User()
+    + save()
+}
+
+class Content {
+    CRIME = 1
+    DRAMA = 2
+    ETC = 4
+    ---
+    categories // bitfield
+    title
+    yearOfRelease
+    rating
+
+    Content()
+}
+
+class ContentManager {
+    Content[]
+    search()
+    ContentManager()
+    loaddata(filename)
+}
+
+class ChooseToWatchLater {
+
+}
+
+class WatchAgain {
+    watchHistoryData()
+
+}
+
+class ChooseGenre {
+
+}
+
+StreamingService *-- User
+Main *-- StreamingService
+StreamingService *-- StartMenu
+StartMenu --* Register
+StartMenu o-- Register
+StartMenu -- Login
+
+Login *-- MainMenu
+MainMenu *-- Search
+MainMenu *-- Content
+MainMenu *-- ContentManager
+ContentManager *-- Content
+MainMenu *-- Watchlater
+MainMenu *-- WatchAgain
+MainMenu *--ChooseGenre
+
+MainMenu *- ChooseToWatchLater
+MainMenu *-- Watch
+MainMenu *-- Return
+MainMenu *-- Exit
+MainMenu *-- Logout
+
+@enduml
