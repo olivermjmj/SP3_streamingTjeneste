@@ -5,6 +5,11 @@ class Main {
     + main(String[] args)
 }
 
+class Exit {
+    - Logout()
+    - System.stop()
+
+}
 
 class StreamingService {
     + static User user = null
@@ -28,13 +33,15 @@ class Login{
 }
 
 class Watch {
+    watchShow()
 
 }
 
-class MainMenu{
-    + Search
+abstract class MainMenu{
+
+
     + WatchHistoryDATA / continue watching
-    + Watchlater // UserWatchLaterData
+    + WatchLater // UserWatchLaterData
 
     - Logout
     - abstract  returnToMainMenu{}
@@ -74,7 +81,7 @@ class ContentManager {
 }
 
 class ChooseToWatchLater {
-
+    addShow()
 }
 
 class WatchAgain {
@@ -83,7 +90,8 @@ class WatchAgain {
 }
 
 class ChooseGenre {
-
+    int selectGenre
+    List <Content> availableGenres
 }
 
 StreamingService *-- User
@@ -107,5 +115,6 @@ MainMenu *-- Watch
 MainMenu *-- Return
 MainMenu *-- Exit
 MainMenu *-- Logout
+StreamingService *- Util
 
 @enduml
