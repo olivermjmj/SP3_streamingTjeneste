@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object Chill
+
+object User
+object Watch
+object WatchLater
+object StartMenu
+object HovedMenu
+object ChooseGenre
+object Search
+object RegisterUser
+object CreateUser
+object UserLogin
+object CreatePassword
+
+
+
+Chill *-- User
+Chill *-- StartMenu
+StartMenu *-- RegisterUser
+
+StartMenu *-- HovedMenu
+UserLogin <|-- CreatePassword
+UserLogin <|-- CreateUser
+StartMenu *-- UserLogin
+HovedMenu <|-- Watch
+HovedMenu *-- Search
+Search <|-- ChooseGenre
+HovedMenu <|-- WatchLater
+
+
+
+
+
+@enduml
