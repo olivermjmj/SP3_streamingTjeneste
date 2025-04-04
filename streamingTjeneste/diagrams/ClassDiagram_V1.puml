@@ -11,6 +11,10 @@ class Exit {
 
 }
 
+class Logout {
+   + returnToStartMenu()
+}
+
 class StreamingService {
     + static User user = null
     + static Start()
@@ -23,8 +27,8 @@ class StartMenu {
 }
 
 
-class Watch {
-    watchShow()
+class Play {
+   + watchShow()
 
 }
 
@@ -48,7 +52,7 @@ class User {
     + name
 
     + watchhistorydata
-    + watchlater
+    + watchLater
 
     + User()
     + save()
@@ -74,23 +78,21 @@ class ContentManager {
     Content[]
 
     + ContentManager()
-    + loaddata(filename)
+    + loadData(filename)
     + int[] search()
     + void setGenreFilter(int genres)
 }
 
 class ChooseToWatchLater {
-    addShow()
+    + addShow()
 }
 
 class WatchAgain {
     showHistoryData()
-    Watch()
     returnToMainMenu{}
 }
 
 class ChooseGenre {
-    int selectGenre
     List <Content> availableGenres
 }
 
@@ -112,6 +114,14 @@ package "Util" {
     }
 }
 
+class Search {
+    + searchContentManager()
+}
+
+class WatchLater {
+    + viewWatchLater()
+}
+
 StreamingService *-- User
 Main *-- StreamingService
 StreamingService *-- StartMenu
@@ -123,13 +133,12 @@ MainMenu *-- Search
 MainMenu *-- Content
 MainMenu *-- ContentManager
 ContentManager *-- Content
-MainMenu *-- Watchlater
+MainMenu *-- WatchLater
 MainMenu *-- WatchAgain
 MainMenu *--ChooseGenre
 
 MainMenu *- ChooseToWatchLater
-MainMenu *-- Watch
-MainMenu *-- Return
+MainMenu *-- Play
 MainMenu *-- Exit
 MainMenu *-- Logout
 StreamingService *- Util
