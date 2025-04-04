@@ -49,13 +49,13 @@ class User {
     + static User login(name, passwd)
     + static boolean register(name, passwd)
     ---
-    + name
+    + String name
 
     + watchhistorydata
     + watchLater
 
-    + User()
-    + save()
+    + User(name)konstruktor
+    + save()watchhistorydata
 }
 
 class Content {
@@ -76,6 +76,7 @@ class Content {
 
 class ContentManager {
     Content[]
+    - int genreFilter
 
     + ContentManager()
     + loadData(filename)
