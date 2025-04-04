@@ -25,6 +25,8 @@ public class StartMenu {
                 break;
             case "4":
                 break;
+            case "5":
+                break;
             default:
 
         }
