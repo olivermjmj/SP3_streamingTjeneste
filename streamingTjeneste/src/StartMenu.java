@@ -23,6 +23,8 @@ public class StartMenu {
                 break;
             case "3":
                 break;
+            case "4":
+                break;
             default:
 
         }
