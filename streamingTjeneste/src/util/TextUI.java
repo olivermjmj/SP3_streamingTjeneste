@@ -34,7 +34,7 @@ public class TextUI {
                 numInput = Integer.parseInt(input);  // Try converting to number
                 valid = true;  // If successful, mark as valid
             } catch (NumberFormatException e) {
-                displayMessage("Skriv et gyldigt tal.");  // Error message, loop repeats
+                displayMessage("Write a valid number.");  // Error message, loop repeats
             }
         }
         return numInput;  // Return the valid number

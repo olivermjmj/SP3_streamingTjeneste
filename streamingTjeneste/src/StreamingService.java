@@ -1,7 +1,14 @@
 public class StreamingService {
-    static User user = null;
+    User user = null;
+    static StartMenu startMenu = new StartMenu();
 
-    static void start() {
+    static void startProgram() {
+
+    startMenu.startMenu();
+    }
+
+    static void loopProgram() {
+
 
     }
 }

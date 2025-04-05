@@ -1,5 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        StreamingService.start();
+
+        StreamingService.startProgram();
+
+        StreamingService.loopProgram();
+
     }
 }

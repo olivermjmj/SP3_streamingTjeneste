@@ -47,7 +47,7 @@ WatchLater *-- Select
 Select *-- Watch
 Select *- chooseToWatchLater
 chooseToWatchLater *- UserWatchLaterData
-WatchLater *-- UserWatchLaterData
+WatchLater <|-- UserWatchLaterData
 Watch *-- UserWatchData
 
 UserWatchData <|- ShowWatched
