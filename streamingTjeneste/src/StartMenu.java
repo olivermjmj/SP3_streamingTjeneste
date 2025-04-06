@@ -1,4 +1,3 @@
-import main.MainMenu;
 import util.FileIO;
 import util.TextUI;
 
@@ -9,13 +8,14 @@ public class StartMenu {
     int choice;
     String username;
     String password;
+    User user;
 
     TextUI UI = new TextUI();
     FileIO IO = new FileIO();
 
-    public int startMenu() {
+    public void startMenu() {
 
-        this.choice = UI.promptNumeric("1. Login" + "\n" + "2. Signup" + "\n" + "3. Exit"); //Asks the user if we wanna login, signup or close the program.
+        this.choice = UI.promptNumeric("1. Login" + "\n" + "2. Signup" + "\n" + "3. Exit"); //Asks the user if he/she want's to login, signup or exit the program.
 
         switch (choice) {
 
@@ -37,7 +37,7 @@ public class StartMenu {
                 this.username = UI.promptText("Please choose your username: ");
                 this.password = UI.promptText("Please choose your password: ");
                 IO.saveUserData("data/userData.csv", username, password);
-
+                startMenu();
             break;
 
             case 3: UI.displayMessage("Closing the program");
@@ -49,7 +49,6 @@ public class StartMenu {
         }
 
 
-        return 0;
     }
 
     public boolean userLoggingIn() {

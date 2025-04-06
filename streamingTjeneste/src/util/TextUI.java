@@ -40,21 +40,6 @@ public class TextUI {
         return numInput;  // Return the valid number
     }
 
-    /* Med rekursion i stedet for while. Vi foretrækker den anden fordi metodekald kræver mere ram, da java laver en ny "stack frame" hver gang en metode kaldes
-       public int promptNumeric(String msg){
-        int numInput=0;
-        System.out.println(msg);                      //Stille brugeren et spørgsmål
-        String input = sc.nextLine();                 //Give brugere et sted at placere sit svar og vente på svaret
-        try {
-             numInput = Integer.parseInt(input);       //Konvertere svaret til et tal
-
-        }catch(NumberFormatException e){
-             numInput = promptNumeric("Skriv et tal. "+msg); // vigtigt at lave den rekursive kald som en tildeling - ellers returneres numInput fra det oprindelige kald (hvor numInput jo var ugyldigt)
-        }
-        return numInput;
-    }
-     */
-
     public String promptText(String msg){
 
         displayMessage(msg);                //Stille brugeren et spørgsmål

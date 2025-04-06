@@ -3,12 +3,28 @@ import java.util.ArrayList;
 public class User {
 
     String name;
+    String password;
     ArrayList<Integer> watchHistory;
     ArrayList<Integer> watchLater;
+
+    public User(String name, String password) {
+
+        this.name = name;
+        this.password = password;
+        ArrayList<Integer> watchHistory = this.watchHistory;
+        ArrayList<Integer> watchLater = this.watchLater;
+    }
+
+
+
+
+
+
 
     public static User login(String name, String passwd) {
         return null;
     }
+
     public static boolean register(String name, String passwd) {
         return false;
     }
