@@ -1,16 +1,6 @@
-
 import util.FileIO;
 import util.TextUI;
 
-import java.io.*;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-
-import java.util.Arrays;
 import java.util.ArrayList;
 
 public class User {
@@ -30,8 +20,7 @@ public class User {
         ArrayList<String> users = IO.loadUserData("data/userData.csv");
 
         for (String user : users) {
-            if (user.trim().equals(userLogin)) {
-
+            if (userLoggingIn(name, passwd)) {
                 return new User(name);
             }
         }
@@ -41,15 +30,35 @@ public class User {
 
     public static boolean register(String name, String passwd) {
 
-        IO.saveUserData("data/userData.csv", name, passwd);
-        return true;
+        if(!userLoggingIn(name)) {
+            if (name.length() >= 1 && passwd.length() >= 1) {
+
+                IO.saveUserData("data/userData.csv", name, passwd);
+                return true;
+            }
+
+
+        }
+
+        return false;
     }
 
+    public static boolean userLoggingIn(String name) {
 
-/*
-    public static boolean userLoggingIn() {
+        ArrayList<String> users = IO.loadUserData("data/userData.csv");
 
-        String userLogin = username + "," + password;
+        for (String user : users) {
+            String[] parts = user.split(",");
+            if (parts.length >= 1 && parts[0].trim().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean userLoggingIn(String name, String passwd) {
+
+        String userLogin = name + "," + passwd;
         ArrayList<String> users = IO.loadUserData("data/userData.csv");
 
         for (String user : users) {
@@ -62,7 +71,6 @@ public class User {
         return false;
     }
 
- */
 }
 
 
