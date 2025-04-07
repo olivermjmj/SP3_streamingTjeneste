@@ -9,51 +9,41 @@ import java.util.Scanner;
 
 public class FileIO {
 
-    public void saveData(ArrayList<String> list, String path, String header){
-        try {
-            FileWriter writer = new FileWriter(path);
-            writer.write(header+"\n");
-            for (String s : list) {
-                writer.write(s+"\n");
-            }
-            writer.close();
-        }catch (IOException e) {
-            System.out.println("problem: "+ e.getMessage());
+    public void saveUserData(String path, String username, String password) {
+
+        try (FileWriter writer = new FileWriter(path, true)) { //True append, makes it so we won't overwrite the existing file's content.
+
+            writer.append(username);
+            writer.append(',');
+            writer.append(password);
+            writer.append('\n');
+
+            System.out.println("Data skrevet til filen!");
+        } catch (IOException e) {
+
+            System.out.println("Something went wrong with saveUserData");
         }
     }
 
-    public ArrayList<String> readData(String path) {
+    public ArrayList<String> loadUserData(String path) {
+
         ArrayList<String> data = new ArrayList<>();
+
         File file = new File(path);
+
         try {
             Scanner scan = new Scanner(file);
             scan.nextLine();//skip header;
             while (scan.hasNextLine()) {
-                String line = scan.nextLine();   //  "tess, 0"
+                String line = scan.nextLine();   //"Bjarne, 123password"
                 data.add(line);
             }
         } catch (FileNotFoundException e) {
+
+            System.out.println("Something went wrong with loadUserData");
         }
         return data;
     }
 
-    public String[] readData(String path, int length) {
-        String[] data = new String[length];
-        File file = new File(path);
-        try{
-            //new scaner created
-            Scanner scan = new Scanner(file);
-            scan.nextLine();//skip header;
-
-            int i = 0;  //counter
-            while (scan.hasNextLine()) {
-                String line = scan.nextLine();  //String line bliver instansieret som det scaneren har læst
-                data[i]=line;                    //information tilføjes til et array
-                i++;                             //counter går op
-            }
-        } catch (FileNotFoundException e){
-            System.out.println("File not found: "+ e.getMessage());
-        }
-        return data;
-    }
 }
+
