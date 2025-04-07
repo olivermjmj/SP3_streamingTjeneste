@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class MainMenu extends JPanel implements ActionListener {
 
@@ -45,6 +46,7 @@ public class MainMenu extends JPanel implements ActionListener {
         panelN.add(button);
 
     }
+    Arraylist <String> Genre;
 
     public void update() {
         text.setText("Welcome "+StreamingService.user.name);

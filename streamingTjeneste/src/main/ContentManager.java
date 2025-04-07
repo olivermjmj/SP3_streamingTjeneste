@@ -1,7 +1,8 @@
 package main;
 
-public class ContentManager {
+public class ContentManager  {
     Content[] data;
+
 
     private int genreFilter;
 
