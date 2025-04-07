@@ -5,6 +5,11 @@ import java.awt.event.ActionListener;
 
 public class StartMenu extends JPanel implements ActionListener {
 
+
+
+
+
+
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");
     JTextField userTextField = new JTextField();
