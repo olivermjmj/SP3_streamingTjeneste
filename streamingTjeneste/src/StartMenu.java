@@ -1,40 +1,95 @@
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+public class StartMenu extends JPanel implements ActionListener {
 
-public class StartMenu {
+    JLabel userLabel = new JLabel("USERNAME");
+    JLabel passwordLabel = new JLabel("PASSWORD");
+    JTextField userTextField = new JTextField();
+    JLabel msg = new JLabel("");
+    JPasswordField passwordField = new JPasswordField();
+    JButton loginButton = new JButton("LOGIN");
+    JButton registerButton = new JButton("REGISTER");
+    JCheckBox showPassword = new JCheckBox("Show Password");
 
-    Scanner scanner = new Scanner(System.in);
+    StartMenu() {
+        this.setLayout(new GridBagLayout());
 
-    boolean startMenuIsRunning = true;
+        JPanel inner = new JPanel();
+        GroupLayout layout = new GroupLayout(inner);
+        inner.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
-    while (startMenuIsRunning) {
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(userLabel)
+                        .addComponent(passwordLabel)
+                        .addComponent(loginButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(userTextField)
+                        .addComponent(passwordField)
+                        .addComponent(registerButton))
+                .addComponent(showPassword)
+        );
+        layout.setVerticalGroup( layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(userLabel)
+                        .addComponent(userTextField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(passwordLabel)
+                        .addComponent(passwordField))
+                .addComponent(showPassword)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(loginButton)
+                        .addComponent(registerButton))
+        );
 
-        System.out.println("1. Register");
-        System.out.println("2. Login");
-        System.out.println("3. Exit");
+        // add Action listener to components
+        loginButton.addActionListener(this);
+        registerButton.addActionListener(this);
+        showPassword.addActionListener(this);
+        passwordField.setEchoChar('*');
 
-        String chooseOption = scanner.nextLine();
-
-        switch (chooseOption){
-
-            case "1":
-                break;
-            case "2":
-                break;
-            case "3":
-                break;
-            default:
-
-        }
-
-
-
-
+        this.add(inner);
+        this.setVisible(true);
     }
 
-
-
-
-
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // LOGIN button
+        if (e.getSource() == loginButton) {
+            String userText;
+            String pwdText;
+            userText = userTextField.getText();
+            pwdText = passwordField.getText();
+            StreamingService.user = User.login(userText, pwdText);
+            if (StreamingService.user != null) {
+                StreamingService.showMainMenu();
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+            }
+        }
+        // REGISTER button
+        if (e.getSource() == registerButton) {
+            String userText;
+            String pwdText;
+            userText = userTextField.getText();
+            pwdText = passwordField.getText();
+            boolean res = User.register(userText, pwdText);
+            if (!res) {
+                JOptionPane.showMessageDialog(this, "Failed to register");
+            }
+        }
+        // SHOW PASSWORD box
+        if (e.getSource() == showPassword) {
+            if (showPassword.isSelected()) {
+                passwordField.setEchoChar('\0');
+            } else {
+                passwordField.setEchoChar('*');
+            }
+        }
+    }
 }
