@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class MainMenu extends JPanel implements ActionListener {
 
+
     private JButton button;
     private JLabel text;
 

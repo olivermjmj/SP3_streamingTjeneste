@@ -98,8 +98,8 @@ public class User {
     }
 
     public String name;
-    ArrayList<Integer> watchhistory;
-    ArrayList<Integer> watchlater;
+    ArrayList<Integer> watchhistoryData;
+    ArrayList<Integer> watchlaterData;
 
     public User(String name) {
         this.name = name;
