@@ -46,7 +46,6 @@ public class MainMenu extends JPanel implements ActionListener {
         panelN.add(button);
 
     }
-    Arraylist <String> Genre;
 
     public void update() {
         text.setText("Welcome "+StreamingService.user.name);
