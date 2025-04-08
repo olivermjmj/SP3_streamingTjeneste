@@ -2,11 +2,11 @@ package main;
 
 import java.util.ArrayList;
 
-public class ChooseGenre extends MainMenu{
+public class ChooseGenre {
 
 
-    @Override
+   /* @Override
     public void returnToMainMenu() {
 
-    }
+    }*/
 }

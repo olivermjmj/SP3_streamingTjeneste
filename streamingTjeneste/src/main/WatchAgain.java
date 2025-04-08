@@ -1,10 +1,10 @@
 package main;
 
-public class WatchAgain extends MainMenu{
+public class WatchAgain {
 
 
-    @Override
+   /* @Override
     public void returnToMainMenu() {
 
-    }
+    }*/
 }

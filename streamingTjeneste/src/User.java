@@ -2,13 +2,19 @@ import util.FileIO;
 import util.TextUI;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+//import static jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle.title;
 
 public class User {
 
     public String name;
+    Scanner scanner = new Scanner(System.in);
 
     static TextUI UI = new TextUI();
     static FileIO IO = new FileIO();
+
 
     public User(String name) {
         this.name = name;
@@ -30,7 +36,7 @@ public class User {
 
     public static boolean register(String name, String passwd) {
 
-        if(!userLoggingIn(name)) {
+        if (!userLoggingIn(name)) {
             if (name.length() >= 1 && passwd.length() >= 1) {
 
                 IO.saveUserData("data/userData.csv", name, passwd);
@@ -69,6 +75,71 @@ public class User {
         }
 
         return false;
+    }
+    public void SearchByChoice(){}
+
+    public void searchMovieGenre() {
+        Scanner scanner = new Scanner(System.in); // if not already declared globally
+
+        try {
+            System.out.print("Enter the genre of the movies you would like to see: ");
+            String query = scanner.nextLine().trim().toLowerCase();
+
+            List<Movies> moviesList = Movies.getMoviesFromCSV("data/movies.csv");
+            if (moviesList.isEmpty()) {
+                System.out.println("No movies found in the file.");
+                return;
+
+            }
+
+            boolean movieFound = false;
+            System.out.println("\nSearch results:");
+            for (Movies movie : moviesList) {
+                if (movie.getMoviesGenres().toLowerCase().contains(query)) {
+                    System.out.println(movie);
+                    movieFound = true;
+                }
+            }
+
+            if (!movieFound) {
+                System.out.println("No movies found matching your genre.");
+            }
+        } catch (Exception e) {
+            System.err.println("An error occurred during the search: " + e.getMessage());
+        }
+
+
+    }
+    public void searchSeriesGenre () {
+        Scanner scanner2 = new Scanner(System.in); // if not already declared globally
+
+        try {
+            System.out.print("Enter the genre of the series you would like to see: ");
+            String query = scanner2.nextLine().trim().toLowerCase();
+
+            List<Movies> moviesList = Movies.getMoviesFromCSV("data/seriesData.csv");
+            if (moviesList.isEmpty()) {
+                System.out.println("No series found in the genre.");
+                return;
+            }
+
+            boolean movieFound = false;
+            System.out.println("\nSearch results:");
+            for (Movies movie : moviesList) {
+                if (movie.getMoviesGenres().toLowerCase().contains(query)) {
+                    System.out.println(movie);
+                    movieFound = true;
+                }
+            }
+
+            if (!movieFound) {
+                System.out.println("No Series found matching your genre.");
+            }
+        } catch (Exception e) {
+            System.err.println("An error occurred during the search: " + e.getMessage());
+        }
+
+        // scanner.close(); // Only close if you're not using it again elsewhere
     }
 
 }

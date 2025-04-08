@@ -2,18 +2,19 @@ package main;
 
 import java.util.ArrayList;
 
-public class Search extends MainMenu{
+public class Search {
 
 
 
     public int searchContentManager() {
+    return 0;
 
 
     }
 
 
-    @Override
+   /* @Override
     public void returnToMainMenu() {
 
-    }
+    }*/
 }

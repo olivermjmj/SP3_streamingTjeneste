@@ -118,5 +118,9 @@ public class Series {
         } catch (Exception e) {
             System.err.println("An error occurred during the search: " + e.getMessage());
         }
+
+    }
+    public String getSeriesGenre(){
+        return genres;
     }
 }
