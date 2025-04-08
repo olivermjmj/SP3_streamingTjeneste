@@ -1,28 +1,22 @@
 package main;
 
-public class Content {
-    public static final int GENRE_CRIME = 1;
-    public static final int GENRE_DRAMA = 2;
+import java.util.ArrayList;
 
-    public final int genres;
+public class Content {
+    public final ArrayList <String> genres;
     public final String title;
     public final int yearOfRelease;
     public final float rating;
+   public final short[] seasons;
+   public  int choice;
 
-    public final short[] seasons;
-
-    public Content(String title, int year, int genres, float rating) {
+    public Content(String title, int year, ArrayList <String> genres, float rating,short[] seasons) {
         this.title = title;
         this.yearOfRelease = year;
         this.genres = genres;
         this.rating = rating;
-        this.seasons = null;
+        this.seasons = seasons ;
     }
-    public Content(String title, int year, int genres, float rating, short[] seasons) {
-        this.title = title;
-        this.yearOfRelease = year;
-        this.genres = genres;
-        this.rating = rating;
-        this.seasons = seasons;
-    }
+
+
 }
