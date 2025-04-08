@@ -1,6 +1,5 @@
+
 public class Content {
-    public static final int GENRE_CRIME = 1;
-    public static final int GENRE_DRAMA = 2;
 
     public final int genres;
     public final String title;
@@ -9,16 +8,16 @@ public class Content {
 
     public final short[] seasons;
 
-    public Content(String title, int year, int genres, float rating) {
+    public Content(String title, int yearOfRelease, int genres, float rating) {
         this.title = title;
-        this.yearOfRelease = year;
+        this.yearOfRelease = yearOfRelease;
         this.genres = genres;
         this.rating = rating;
         this.seasons = null;
     }
-    public Content(String title, int year, int genres, float rating, short[] seasons) {
+    public Content(String title, int yearOfRelease, int genres, float rating, short[] seasons) {
         this.title = title;
-        this.yearOfRelease = year;
+        this.yearOfRelease = yearOfRelease;
         this.genres = genres;
         this.rating = rating;
         this.seasons = seasons;
