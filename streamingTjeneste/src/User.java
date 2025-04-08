@@ -76,7 +76,29 @@ public class User {
 
         return false;
     }
-    public void SearchByChoice(){}
+    public void SearchByChoice() {
+        Scanner scanner = new Scanner(System.in);  // If you already have one globally, reuse that instead
+
+        System.out.println("What would you like to search by genre?");
+        System.out.println("1. Movies");
+        System.out.println("2. Series");
+        System.out.print("Enter your choice (1 or 2): ");
+
+        String choice = scanner.nextLine().trim();
+
+        switch (choice) {
+            case "1":
+                searchMovieGenre(); // Calls the movie genre search method
+                break;
+            case "2":
+                searchSeriesGenre(); // Calls the series genre search method
+                break;
+            default:
+                System.out.println("Invalid choice. Please enter 1 for Movies or 2 for Series.");
+                break;
+        }
+    }
+
 
     public void searchMovieGenre() {
         Scanner scanner = new Scanner(System.in); // if not already declared globally
