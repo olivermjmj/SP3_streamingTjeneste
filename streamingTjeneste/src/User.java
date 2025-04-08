@@ -117,22 +117,22 @@ public class User {
             System.out.print("Enter the genre of the series you would like to see: ");
             String query = scanner2.nextLine().trim().toLowerCase();
 
-            List<Movies> moviesList = Movies.getMoviesFromCSV("data/seriesData.csv");
-            if (moviesList.isEmpty()) {
+            List<Series> seriesList = Series.getSeriesFromCSV("data/seriesData.csv");
+            if (seriesList.isEmpty()) {
                 System.out.println("No series found in the genre.");
                 return;
             }
 
-            boolean movieFound = false;
+            boolean seriesFound = false;
             System.out.println("\nSearch results:");
-            for (Movies movie : moviesList) {
-                if (movie.getMoviesGenres().toLowerCase().contains(query)) {
-                    System.out.println(movie);
-                    movieFound = true;
+            for (Series series : seriesList) {
+                if (series.getSeriesGenre().toLowerCase().contains(query)) {
+                    System.out.println(series);
+                    seriesFound = true;
                 }
             }
 
-            if (!movieFound) {
+            if (!seriesFound) {
                 System.out.println("No Series found matching your genre.");
             }
         } catch (Exception e) {
