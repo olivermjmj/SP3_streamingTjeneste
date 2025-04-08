@@ -5,9 +5,11 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 public class ContentRenderer extends JLabel implements ListCellRenderer<Content> {
+
     public ContentRenderer() {
         setOpaque(true);
     }
+
     @Override
     public Component getListCellRendererComponent(JList<? extends Content> list, Content content, int index, boolean isSelected, boolean cellHasFocus) {
 

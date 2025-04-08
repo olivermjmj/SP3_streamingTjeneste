@@ -12,6 +12,10 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private JTextField searchField = new JTextField();
     private JButton searchButton = new JButton("Search");
     JList<Content> list;
+
+    Movies movies;
+    Series series;
+
     MainMenu() {
         this.setLayout(new BorderLayout());
 
@@ -95,7 +99,15 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     public void actionPerformed(ActionEvent e) {
         //JOptionPane.showMessageDialog(this, "Button Clicked! ");
         if (e.getSource() == searchButton) {
+
             System.out.println("Search \""+searchField.getText()+"\"");
+
+            //Use User search
+            String search = searchField.getText();
+
+
+
+
         }
         if (e.getSource() == button)
             StreamingService.showStartMenu();
