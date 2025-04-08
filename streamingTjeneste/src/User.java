@@ -107,4 +107,8 @@ public class User {
 
     public void save() {
     }
+    public int[] search() {
+        // TODO: implement search functionality based on genreFilter
+        return null;
+    }
 }

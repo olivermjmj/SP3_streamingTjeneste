@@ -1,6 +1,6 @@
 package main;
 
-public class ContentManager {
+public class ContentManager extends Mainmenu {
     private Content[] data;
     private int genreFilter;
 
@@ -12,10 +12,6 @@ public class ContentManager {
         // TODO: implement loading data from a file
     }
 
-    public int[] search() {
-        // TODO: implement search functionality based on genreFilter
-        return null;
-    }
 
     public void setGenreFilter(int genres) {
         this.genreFilter = genres;
@@ -25,7 +21,7 @@ public class ContentManager {
         return genreFilter;
     }
 
-    // Optional: example method to demonstrate switch usage
+
     public void listGenre() {
         switch (genreFilter) {
             case 1:
