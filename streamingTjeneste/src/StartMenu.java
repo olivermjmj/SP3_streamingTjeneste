@@ -93,6 +93,8 @@ public class StartMenu extends JPanel implements ActionListener {
             if (!res) {
                 //JOptionPane.showMessageDialog(this, "Failed to register");
                 msgLabel.setText("Failed to register");
+            } else {
+                msgLabel.setText("");
             }
         }
         // SHOW PASSWORD box

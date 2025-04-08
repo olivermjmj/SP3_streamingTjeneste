@@ -45,16 +45,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         JPanel panelS = new JPanel();
         JPanel panelC = new JPanel(new BorderLayout());
         panelC.setMinimumSize(new Dimension(0, 0));
-        ImageIcon image = new ImageIcon("img/chill.png");
-        //for (int y = 0; y < 10; y++) {
-        //    for (int x = 0; x < 10; x++) {
-        //        gbc.gridx = x;
-        //        gbc.gridy = y;
-        //        JButton tmp = new JButton("Content (" + x + ", " + y+")");
-        //        tmp.setIcon(image);
-        //        panelC.add(tmp, gbc);
-        //    }
-        //}
         // Data to be displayed in the JTable
         //create the model and add elements
         DefaultListModel<Content> listModel = new DefaultListModel<>();
@@ -62,14 +52,12 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             listModel.addElement(new Content("Movie"+(i+1), i, 0, 8.4f));
         //create the list
         list = new JList<>(listModel);
+        list.setVisibleRowCount(0);
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.addListSelectionListener(this);
-        list.setFixedCellWidth(100);
-        //list.setVisibleRowCount(10);
         list.setCellRenderer(new ContentRenderer());
         JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        //scrollPane.setPreferredSize(new Dimension(408, 100));
 
         panelC.add(scrollPane, BorderLayout.CENTER);
         panelC.revalidate();
@@ -79,12 +67,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         panelE.setBackground(Color.yellow);
         panelS.setBackground(Color.magenta);
         //panelC.setBackground(Color.blue);
-
-        //panelN.setPreferredSize(new Dimension(100,100));
-        //panelW.setPreferredSize(new Dimension(100,100));
-        //panelE.setPreferredSize(new Dimension(100,100));
-        //panelS.setPreferredSize(new Dimension(100,100));
-        //panelC.setPreferredSize(new Dimension(100,100));
 
         this.add(panelN, BorderLayout.NORTH);
         this.add(panelW, BorderLayout.WEST);

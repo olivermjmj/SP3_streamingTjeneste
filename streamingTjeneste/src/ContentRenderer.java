@@ -9,13 +9,12 @@ public class ContentRenderer extends JLabel implements ListCellRenderer<Content>
         setOpaque(true);
     }
     @Override
-    public Component getListCellRendererComponent(JList<? extends Content> list, Content country, int index,
-                                                  boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Content> list, Content content, int index, boolean isSelected, boolean cellHasFocus) {
 
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("img/Psycho.jpg").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));;
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("img/"+content.title+".jpg").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));;
 
         setIcon(imageIcon);
-        setText(country.title);
+        setText("<html><h1>"+content.title+"</h1><br>"+content.yearOfRelease+"<br>"+content.rating+"</html>");
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
