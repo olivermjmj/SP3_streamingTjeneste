@@ -5,11 +5,6 @@ import java.awt.event.ActionListener;
 
 public class StartMenu extends JPanel implements ActionListener {
 
-
-
-
-
-
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");
     JTextField userTextField = new JTextField();
@@ -18,6 +13,7 @@ public class StartMenu extends JPanel implements ActionListener {
     JButton loginButton = new JButton("LOGIN");
     JButton registerButton = new JButton("REGISTER");
     JCheckBox showPassword = new JCheckBox("Show Password");
+    JLabel msgLabel = new JLabel("");
 
     StartMenu() {
         this.setLayout(new GridBagLayout());
@@ -36,8 +32,9 @@ public class StartMenu extends JPanel implements ActionListener {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(userTextField)
                         .addComponent(passwordField)
+                        .addComponent(showPassword)
+                        .addComponent(msgLabel)
                         .addComponent(registerButton))
-                .addComponent(showPassword)
         );
         layout.setVerticalGroup( layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -46,11 +43,16 @@ public class StartMenu extends JPanel implements ActionListener {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(passwordLabel)
                         .addComponent(passwordField))
-                .addComponent(showPassword)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(msgLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(showPassword))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(loginButton)
                         .addComponent(registerButton))
         );
+
+        msgLabel.setForeground(Color.RED);
 
         // add Action listener to components
         loginButton.addActionListener(this);
@@ -72,9 +74,13 @@ public class StartMenu extends JPanel implements ActionListener {
             pwdText = passwordField.getText();
             StreamingService.user = User.login(userText, pwdText);
             if (StreamingService.user != null) {
+                userTextField.setText("");
+                passwordField.setText("");
+                msgLabel.setText("");
                 StreamingService.showMainMenu();
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+                //JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+                msgLabel.setText("Invalid Username or Password");
             }
         }
         // REGISTER button
@@ -85,7 +91,8 @@ public class StartMenu extends JPanel implements ActionListener {
             pwdText = passwordField.getText();
             boolean res = User.register(userText, pwdText);
             if (!res) {
-                JOptionPane.showMessageDialog(this, "Failed to register");
+                //JOptionPane.showMessageDialog(this, "Failed to register");
+                msgLabel.setText("Failed to register");
             }
         }
         // SHOW PASSWORD box
