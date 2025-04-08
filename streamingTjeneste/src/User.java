@@ -71,6 +71,10 @@ public class User {
         return false;
     }
 
+    public void save() {
+        System.out.println("FIXME: implement User.Save()");
+    }
+
 }
 
 

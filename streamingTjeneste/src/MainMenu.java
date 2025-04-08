@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class MainMenu extends JPanel implements ActionListener, ListSelectionListener {
 
-    private JButton button;
+    private JButton logoutButton;
     private JLabel text;
     private JTextField searchField = new JTextField();
     private JButton searchButton = new JButton("Search");
@@ -17,8 +17,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
 
         text = new JLabel();
-        button = new JButton("Back");
-        button.addActionListener(this);
+        logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -48,7 +48,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         // Data to be displayed in the JTable
         //create the model and add elements
         DefaultListModel<Content> listModel = new DefaultListModel<>();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 800; i++)
             listModel.addElement(new Content("Movie"+(i+1), i, 0, 8.4f));
         //create the list
         list = new JList<>(listModel);
@@ -60,13 +60,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         JScrollPane scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         panelC.add(scrollPane, BorderLayout.CENTER);
-        panelC.revalidate();
 
-        panelN.setBackground(Color.red);
-        panelW.setBackground(Color.green);
-        panelE.setBackground(Color.yellow);
-        panelS.setBackground(Color.magenta);
-        //panelC.setBackground(Color.blue);
+        panelW.setBorder(BorderFactory.createLineBorder(Color.black));
+        panelC.setBorder(BorderFactory.createLineBorder(Color.black));
 
         this.add(panelN, BorderLayout.NORTH);
         this.add(panelW, BorderLayout.WEST);
@@ -75,7 +71,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         this.add(panelC, BorderLayout.CENTER);
 
         panelN.add(text);
-        panelN.add(button);
+        panelN.add(logoutButton);
 
     }
 
@@ -93,11 +89,13 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //JOptionPane.showMessageDialog(this, "Button Clicked! ");
         if (e.getSource() == searchButton) {
             System.out.println("Search \""+searchField.getText()+"\"");
         }
-        if (e.getSource() == button)
+        if (e.getSource() == logoutButton) {
+            StreamingService.user.save();
+            StreamingService.user = null;
             StreamingService.showStartMenu();
+        }
     }
 }
