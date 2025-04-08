@@ -1,9 +1,6 @@
 import util.FileIO;
 import util.TextUI;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 public class User {
@@ -73,71 +70,8 @@ public class User {
 
         return false;
     }
-    private static final String USER_DATA_FILE = "data/userData.csv";
-
-    public String name;
-    public ArrayList<Integer> watchhistory = new ArrayList<>();
-    public ArrayList<Integer> watchlater = new ArrayList<>();
-
-
-
-    public static User login(String username, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userDetails = line.split(",");
-                if (userDetails.length == 2) {
-                    String storedUsername = userDetails[0];
-                    String storedPassword = userDetails[1];
-
-                    if (storedUsername.equals(username) && storedPassword.equals((password))) {
-                        return new User(storedUsername);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static boolean register(String username, String password) {
-        if (usernameExists(username)) {
-            return false;
-        }
-
-        try (FileWriter writer = new FileWriter(USER_DATA_FILE, true)) {
-            writer.append(username).append(",").append(password).append("\n");
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static boolean usernameExists(String newUsername) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userDetails = line.split(",");
-                if (userDetails.length >= 1) {
-                    String storedUsername = userDetails[0];
-                    if (storedUsername.equals(newUsername)) {
-                        return true;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false; // Ikke fundet
-    }
-
-    public void save() {
-    }
 
 }
-
 
 
 
