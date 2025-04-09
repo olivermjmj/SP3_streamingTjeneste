@@ -14,16 +14,16 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private Series[] series;
     private DefaultListModel<Content> listModel;
     private DefaultListModel<Content> listModelSeries;
-    private JButton logoutButton;
-    private JLabel text;
-    private JPanel selectedPanel = new JPanel();
-    private JLabel label= new JLabel();
-    private JButton playButton = new JButton("PLAY");
-    private JButton addWatchLaterButton = new JButton("Watch later");
-    private JTextField searchField = new JTextField();
-    private JButton searchButton = new JButton("Search");
-    private JComboBox<String> cb;
-    private JList<Content> list;
+    private final JButton logoutButton;
+    private final JLabel text;
+    private final JPanel selectedPanel = new JPanel();
+    private final JLabel label= new JLabel();
+    private final JButton playButton = new JButton("PLAY");
+    private final JButton addWatchLaterButton = new JButton("Watch later");
+    private final JTextField searchField = new JTextField();
+    private final JButton searchButton = new JButton("Search");
+    private final JComboBox<String> cb;
+    private final JList<Content> list;
 
     MainMenu() {
         this.setLayout(new BorderLayout());
@@ -127,7 +127,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting() == false) {
+        if (!e.getValueIsAdjusting()) {
             Content c = list.getSelectedValue();
             if (c == null)
                 return;
@@ -182,16 +182,47 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             StreamingService.user = null;
             StreamingService.showStartMenu();
         }
+
+
+        //Plays and adds a given piece of content to a 'User has Watched' list
         if (e.getSource() == playButton) {
+
             Content c = list.getSelectedValue();
-            if (c != null)
-                JOptionPane.showMessageDialog(this, "Now playing "+c.title);
-        }
-        if (e.getSource() == addWatchLaterButton) {
-            Content c = list.getSelectedValue();
-            if (c == null)
+            if (c == null) {
                 return;
-            System.out.println("FIXME: Add "+c.title+" to watch later");
+            }
+
+            boolean alreadyAdded = User.addContentWatched(StreamingService.user.name, c.title);
+
+            if(alreadyAdded) {
+
+                User.addContentWatched(StreamingService.user.name, c.title);
+                JOptionPane.showMessageDialog(this, "You are now watching " + c.title + " for the first time!");
+            } else {
+
+                JOptionPane.showMessageDialog(this, "You are now watching " + c.title + "...");
+            }
+
+        }
+
+        //Add to 'Watch Later' list
+        if (e.getSource() == addWatchLaterButton) {
+
+            Content c = list.getSelectedValue();
+            if (c == null) {
+                return;
+            }
+
+            if(!StreamingService.user.watchLater.contains(c)) {
+
+                StreamingService.user.watchLater.add(c);
+                StreamingService.user.addWatchLater(StreamingService.user.name, c.title);
+                JOptionPane.showMessageDialog(this, "Added to 'watch later'");
+            } else {
+
+                JOptionPane.showMessageDialog(this, c.title + " has already been added to 'Watch Later'");
+            }
+
         }
     }
 }

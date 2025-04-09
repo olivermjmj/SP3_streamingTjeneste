@@ -17,80 +17,6 @@ public class User {
         this.name = name;
     }
 
-/*
-    public ArrayList<Content> searchByTitle(String search) {
-
-        ArrayList<Content> result = new ArrayList<>();
-
-        ArrayList<Movies> movieList = new ArrayList<>(Movies.getMovieData("data/movies.csv"));
-        ArrayList<Series> seriesList = new ArrayList<>(Series.getSerieData("data/series.csv"));
-
-        String searchResult = search.toLowerCase();
-
-        for(Movies m : movieList) {
-
-            if (m.getTitle().toLowerCase().contains(searchResult)) {
-
-                result.add(m);
-            }
-        }
-
-        for(Series s : seriesList) {
-
-            if(s.getTitle().toLowerCase().contains(searchResult)) {
-
-                result.add(s);
-            }
-        }
-
-        return result;
-    }
-
-
-    public void searchAndHandleChoice(String name, Content selected) {
-
-
-        String search = UI.promptText("Search after a titel: ");
-        ArrayList<Content> found = searchByTitle(search);
-
-        if(found.isEmpty()) {
-
-            UI.displayMessage("No such content exists");
-
-        }
-
-        UI.displayMessage("Results: ");
-
-        for(int i = 0; i < found.size(); i++) {
-
-            UI.displayMessage((i + 1) + ". " + found.get(i));
-        }
-
-        int choice = UI.promptNumeric("Vælg et nummer for at interagere (0 for at fortryde):");
-        selected = found.get(choice - 1);
-
-        boolean watch = UI.promptBinary("Wanna watch: " + selected.title + " now? (Y/N)");
-
-        if(watch) {
-
-            UI.displayMessage("Playing " + selected.title + "...");
-        } else if(!watch) {
-
-            boolean addToLater = UI.promptBinary("Wanna add: " + selected.title + " to watch later? (Y/N)"); {
-
-                if(addToLater) {
-
-                    watchLater.add(selected);
-                    IO.saveUserData("watchLaterData.csv", name, selected.title);
-                    UI.displayMessage(selected + " Has now been added to watch later");
-                }
-            }
-        }
-
-
-    }
-
- */
 
 
     public static User login(String name, String passwd) {
@@ -149,6 +75,73 @@ public class User {
 
         return false;
     }
+
+
+    public boolean loadWatchLater(ArrayList<Movies> allMovies, ArrayList<Series> allSeries) {
+
+        ArrayList<String> lines = IO.loadUserData("data/watchLaterData.csv");
+
+        for(String line : lines) {
+
+            String[] parts = line.split(",");
+
+            String username = parts[0].trim();
+            String title = parts[1].trim();
+
+            if(!username.equals(this.name)) {
+
+                return false;
+            }
+
+
+            for(Movies m : allMovies) {
+
+                if(m.title.equalsIgnoreCase(title)) {
+
+                    watchLater.add(m);
+                }
+            }
+
+
+            for(Series s : allSeries) {
+
+                if(s.title.equalsIgnoreCase(title)) {
+
+                    watchLater.add(s);
+                }
+            }
+
+
+        }
+
+        return true;
+    }
+
+
+    public static boolean addContentWatched(String username, String title) {
+
+        String filePath = "data/userHasWatchedData.csv";
+        ArrayList<String> lines = IO.loadUserData(filePath);
+
+        for(String line : lines) {
+
+            if(line.equalsIgnoreCase(username + "," + title)) {
+
+                return false; //This content has already been watched and saved.
+            }
+        }
+
+        IO.saveUserData(filePath, username, title);
+        return true;
+    }
+
+    public void addWatchLater(String userName, String title) {
+
+        String filePath = "data/watchLaterData.csv";
+
+        IO.saveUserData(filePath, userName, title);
+    }
+
 
     public void save() {
         System.out.println("FIXME: implement User.Save()");
