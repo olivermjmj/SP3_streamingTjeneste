@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class User {
 
     public String name;
+    public ArrayList<Content> watchLater = new ArrayList<>();
 
     static TextUI UI = new TextUI();
     static FileIO IO = new FileIO();
