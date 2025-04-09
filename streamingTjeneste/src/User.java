@@ -128,6 +128,47 @@ public class User {
                 }
             }
 
+
+
+        }
+    }
+
+
+
+
+
+    public void searchSeriesGenre () {
+        Scanner scanner2 = new Scanner(System.in); // if not already declared globally
+
+        try {
+            System.out.print("Enter the genre of the series you would like to see: ");
+            String query = scanner2.nextLine().trim().toLowerCase();
+
+            List<Series> seriesList = Series.getSeriesFromCSV("data/seriesData.csv");
+            if (seriesList.isEmpty()) {
+                System.out.println("No series found in the genre.");
+                return;
+            }
+
+            boolean seriesFound = false;
+            System.out.println("\nSearch results:");
+            for (Series series : seriesList) {
+                if (series.getSeriesGenre().toLowerCase().contains(query)) {
+                    System.out.println(series);
+                    seriesFound = true;
+                }
+            }
+
+            if (!seriesFound) {
+                System.out.println("No Series found matching your genre.");
+            }
+        } catch (Exception e) {
+            System.err.println("An error occurred during the search: " + e.getMessage());
+        }
+
+        // scanner.close(); // Only close if you're not using it again elsewhere
+    }
+
 }
 
 
