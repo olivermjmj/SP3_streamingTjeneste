@@ -6,8 +6,8 @@ import javax.swing.*;
 public class StreamingService {
     public static User user;
     private static JPanel cards;
-    public final static String MAINPANEL = "MainMenu";
-    public final static String STARTPANEL = "StartMenu";
+    private final static String MAINPANEL = "MainMenu";
+    private final static String STARTPANEL = "StartMenu";
 
     private static MainMenu mainMenu;
     private static StartMenu startMenu;

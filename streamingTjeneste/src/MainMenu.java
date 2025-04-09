@@ -23,7 +23,10 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JTextField searchField = new JTextField();
     private final JButton searchButton = new JButton("Search");
     private final JComboBox<String> cb;
-    private final JList<Content> list;
+    private JComboBox<String> ratingCb;
+    private JList<Content> list;
+    private ContentListModel<Content> listModelContent;
+    List<Movies> moviesList;
 
     MainMenu() {
         this.setLayout(new BorderLayout());
@@ -59,11 +62,16 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.5;
-        String[] choices = {"Movies", "Series"};
+        String[] choices = {"Both", "Movies", "Series"};
         cb = new JComboBox<String>(choices);
         //cb.setMaximumSize(cb.getPreferredSize());
         cb.addItemListener(this);
         panelW.add(cb, gbc);
+        String[] rchoices = { "Highest", "Lowest" };
+        ratingCb = new JComboBox<String>(rchoices);
+        ratingCb.addItemListener(this);
+        gbc.gridx = 1;
+        panelW.add(ratingCb, gbc);
 
         JPanel panelE = new JPanel();
         JPanel panelS = new JPanel();
@@ -71,17 +79,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         panelC.setMinimumSize(new Dimension(0, 0));
 
         // Content view
-        List<Movies> moviesList = Movies.getMoviesFromCSV("data/movieData.csv");
-        movies = new Movies[moviesList.size()];
-        movies = moviesList.toArray(movies);
-
-        List<Series> seriesList = Series.getSeriesFromCSV("data/seriesData.csv");
-        series = new Series[seriesList.size()];
-        series = seriesList.toArray(series);
-
-        listModel = new DefaultListModel<>();
-        listModelSeries = new DefaultListModel<>();
-        list = new JList<>(listModel);
+        listModelContent = new ContentListModel<>();
+        list = new JList<>(listModelContent);
         list.setVisibleRowCount(0);
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -116,13 +115,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         searchField.setText("");
         selectedPanel.hide();
         cb.setSelectedIndex(0);
-        listModel = new DefaultListModel<>();
-        for (int i = 0; i < movies.length; i++)
-            listModel.addElement(movies[i]);
-        listModelSeries = new DefaultListModel<>();
-        for (int i = 0; i < series.length; i++)
-            listModelSeries.addElement(series[i]);
-        list.setModel(listModel);
+        //listModelContent = new ContentListModel<>();
+        listModelContent.setVisible(3);
+        //list.setModel(listModelContent);
     }
 
     @Override
@@ -145,10 +140,12 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == cb) {
-            if (cb.getSelectedItem().equals("Series"))
-                list.setModel(listModelSeries);
-            else
-                list.setModel(listModel);
+            if (cb.getSelectedIndex() == 0) // both
+                listModelContent.setVisible(3);
+            else if (cb.getSelectedIndex() == 1) // movies
+                listModelContent.setVisible(1);
+            else // series
+                listModelContent.setVisible(2);
             selectedPanel.hide();
         }
     }
@@ -156,26 +153,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == searchButton) {
-            String query = searchField.getText().toLowerCase();
-            if (cb.getSelectedIndex() == 0) {
-                for (Movies movie : movies) {
-                    if (movie.title.toLowerCase().contains(query)) {
-                        if (!listModel.contains(movie))
-                            listModel.addElement(movie);
-                    } else if (listModel.contains(movie)) {
-                        listModel.removeElement(movie);
-                    }
-                }
-            } else if (cb.getSelectedIndex() == 1) {
-                for (Series serie : series) {
-                    if (serie.title.toLowerCase().contains(query)) {
-                        if (!listModelSeries.contains(serie))
-                            listModelSeries.addElement(serie);
-                    } else if (listModelSeries.contains(serie)) {
-                        listModelSeries.removeElement(serie);
-                    }
-                }
-            }
+            selectedPanel.hide();
+            listModelContent.filterTitle(searchField.getText());
         }
         if (e.getSource() == logoutButton) {
             StreamingService.user.save();
@@ -186,7 +165,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
         //Plays and adds a given piece of content to a 'User has Watched' list
         if (e.getSource() == playButton) {
-
             Content c = list.getSelectedValue();
             if (c == null) {
                 return;
@@ -207,7 +185,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
         //Add to 'Watch Later' list
         if (e.getSource() == addWatchLaterButton) {
-
             Content c = list.getSelectedValue();
             if (c == null) {
                 return;
