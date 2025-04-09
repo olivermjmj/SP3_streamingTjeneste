@@ -19,11 +19,13 @@ import java.util.Scanner;
             //this.releaseYear = releaseYear;
             //this.rating = rating;
         }
-
         public String getTitle() {
             return title;
         }
 
+        public String getMoviesGenre() {
+            return genres;
+        }
         @Override
         public String toString() {
             return "Title: " + title + ", Genres: " + genres + ", Release Year: " + releaseYear + ", Rating: " + rating;
@@ -54,7 +56,7 @@ import java.util.Scanner;
             return movies;
         }
 
-        public static Movies parseMovieLine(String line) {
+        private static Movies parseMovieLine(String line) {
             String[] values = line.split(";");
             if (values.length != 4) {
                 return null;
@@ -90,11 +92,34 @@ import java.util.Scanner;
 
             return new Movies(title, genres, releaseYear, rating);
         }
+        private void searchForMovie() {
+            try {
+                System.out.print("Enter the title of the movie you are looking for: ");
+                String query = scanner.nextLine().trim().toLowerCase();
 
+                List<Movies> moviesList = Movies.getMoviesFromCSV("data/movies.csv");
+                if (moviesList.isEmpty()) {
+                    System.out.println("No movies found in the file.");
+                    return;
+                }
 
-        public String getMoviesGenre(){
-            return genres;
+                boolean movieFound = false;
+                System.out.println("Search results:");
+                for (Movies movies : moviesList) {
+                    if (movies.getTitle().toLowerCase().contains(query)) {
+                        System.out.println(movies);
+                        movieFound = true;
+                    }
+                }
+
+                if (!movieFound) {
+                    System.out.println("No movies found matching your query.");
+                }
+            } catch (Exception e) {
+                System.err.println("An error occurred during the search: " + e.getMessage());
+            }
         }
+
 
     }
 
