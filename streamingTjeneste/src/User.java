@@ -143,8 +143,23 @@ public class User {
     }
 
 
-    public void save() {
-        System.out.println("FIXME: implement User.Save()");
+
+    public ArrayList<String> getContentWatched() {
+
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> lines = IO.loadUserData("data/userHasWatchedData.csv");
+
+        for (String line : lines) {
+
+            String[] parts = line.split(",");
+
+            if (parts[0].equals(this.name)) {
+
+                result.add(parts[1]);
+            }
+        }
+
+        return result;
     }
 
 
@@ -242,6 +257,10 @@ public class User {
         }
 
         // scanner.close(); // Only close if you're not using it again elsewhere
+    }
+
+    public void save() {
+        System.out.println("FIXME: implement User.Save()");
     }
 
 }
