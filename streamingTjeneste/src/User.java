@@ -17,7 +17,7 @@ public class User {
         this.name = name;
     }
 
-
+/*
     public ArrayList<Content> searchByTitle(String search) {
 
         ArrayList<Content> result = new ArrayList<>();
@@ -89,6 +89,8 @@ public class User {
 
 
     }
+
+ */
 
 
     public static User login(String name, String passwd) {
