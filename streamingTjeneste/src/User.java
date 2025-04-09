@@ -17,6 +17,79 @@ public class User {
     }
 
 
+    public ArrayList<Content> searchByTitle(String search) {
+
+        ArrayList<Content> result = new ArrayList<>();
+
+        ArrayList<Movies> movieList = new ArrayList<>(Movies.getMovieData("data/movies.csv"));
+        ArrayList<Series> seriesList = new ArrayList<>(Series.getSerieData("data/series.csv"));
+
+        String searchResult = search.toLowerCase();
+
+        for(Movies m : movieList) {
+
+            if (m.getTitle().toLowerCase().contains(searchResult)) {
+
+                result.add(m);
+            }
+        }
+
+        for(Series s : seriesList) {
+
+            if(s.getTitle().toLowerCase().contains(searchResult)) {
+
+                result.add(s);
+            }
+        }
+
+        return result;
+    }
+
+
+    public void searchAndHandleChoice(String name, Content selected) {
+
+
+        String search = UI.promptText("Search after a titel: ");
+        ArrayList<Content> found = searchByTitle(search);
+
+        if(found.isEmpty()) {
+
+            UI.displayMessage("No such content exists");
+
+        }
+
+        UI.displayMessage("Results: ");
+
+        for(int i = 0; i < found.size(); i++) {
+
+            UI.displayMessage((i + 1) + ". " + found.get(i));
+        }
+
+        int choice = UI.promptNumeric("Vælg et nummer for at interagere (0 for at fortryde):");
+        selected = found.get(choice - 1);
+
+        boolean watch = UI.promptBinary("Wanna watch: " + selected.title + " now? (Y/N)");
+
+        if(watch) {
+
+            UI.displayMessage("Playing " + selected.title + "...");
+        } else if(!watch) {
+
+            boolean addToLater = UI.promptBinary("Wanna add: " + selected.title + " to watch later? (Y/N)"); {
+
+                if(addToLater) {
+
+                    watchLater.add(selected);
+                    IO.saveUserData("watchLaterData.csv", name, selected.title);
+                    UI.displayMessage(selected + " Has now been added to watch later");
+                }
+            }
+        }
+
+
+    }
+
+
     public static User login(String name, String passwd) {
 
         String userLogin = name + "," + passwd;
