@@ -19,6 +19,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private JPanel selectedPanel = new JPanel();
     private JLabel label= new JLabel();
     private JButton playButton = new JButton("PLAY");
+    private JButton addWatchLaterButton = new JButton("Watch later");
     private JTextField searchField = new JTextField();
     private JButton searchButton = new JButton("Search");
     private JComboBox<String> cb;
@@ -93,6 +94,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         playButton.setBackground(Color.RED);
         playButton.setForeground(Color.WHITE);
         selectedPanel.add(playButton);
+        addWatchLaterButton.addActionListener(this);
+        selectedPanel.add(addWatchLaterButton);
         selectedPanel.hide();
         panelC.add(selectedPanel, BorderLayout.NORTH);
         panelC.add(scrollPane, BorderLayout.CENTER);
@@ -183,6 +186,12 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             Content c = list.getSelectedValue();
             if (c != null)
                 JOptionPane.showMessageDialog(this, "Now playing "+c.title);
+        }
+        if (e.getSource() == addWatchLaterButton) {
+            Content c = list.getSelectedValue();
+            if (c == null)
+                return;
+            System.out.println("FIXME: Add "+c.title+" to watch later");
         }
     }
 }
