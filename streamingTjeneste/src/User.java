@@ -122,15 +122,20 @@ public class User {
             boolean movieFound = false;
             System.out.println("\nSearch results:");
             for (Movies movie : moviesList) {
-                if (movie.getMoviesGenres().toLowerCase().contains(query)) {
+                if (movie.getMoviesGenre().toLowerCase().contains(query)) {
                     System.out.println(movie);
                     movieFound = true;
                 }
             }
 
-
-
+            if (!movieFound) {
+                System.out.println("No movies found matching your genre.");
+            }
+        } catch (Exception e) {
+            System.err.println("An error occurred during the search: " + e.getMessage());
         }
+
+
     }
 
 
