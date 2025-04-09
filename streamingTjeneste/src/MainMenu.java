@@ -159,7 +159,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             String query = searchField.getText().toLowerCase();
             if (cb.getSelectedIndex() == 0) {
                 for (Movies movie : movies) {
-                    if (movie.title.toLowerCase().contains(query)) {
+                    if (movie.title.toLowerCase().contains(query) || movie.getMoviesGenre().toLowerCase().contains(query)) { //title or moviegenres
                         if (!listModel.contains(movie))
                             listModel.addElement(movie);
                     } else if (listModel.contains(movie)) {
@@ -168,7 +168,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 }
             } else if (cb.getSelectedIndex() == 1) {
                 for (Series serie : series) {
-                    if (serie.title.toLowerCase().contains(query)) {
+                    if (serie.title.toLowerCase().contains(query)  || serie.getSeriesGenre().toLowerCase().contains(query)) { //title or seriesgenres
                         if (!listModelSeries.contains(serie))
                             listModelSeries.addElement(serie);
                     } else if (listModelSeries.contains(serie)) {

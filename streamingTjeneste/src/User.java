@@ -203,6 +203,7 @@ public class User {
                     System.out.println(movie);
                     movieFound = true;
                 }
+
             }
 
             if (!movieFound) {
@@ -248,8 +249,9 @@ public class User {
             System.err.println("An error occurred during the search: " + e.getMessage());
         }
 
-        // scanner.close(); // Only close if you're not using it again elsewhere
+
     }
+
 
 }
 
