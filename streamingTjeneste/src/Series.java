@@ -93,34 +93,6 @@ public class Series extends Content {
         return new Series(title, genres, releaseYear, (float)rating, seasonsAndEpisodes);
     }
 
-    private void searchForSeries() {
-        try {
-            System.out.print("Enter the title of the series you are looking for: ");
-            String query = scanner.nextLine().trim().toLowerCase();
-
-            List<Series> seriesList = Series.getSeriesFromCSV("data/seriesData.csv");
-            if (seriesList.isEmpty()) {
-                System.out.println("No series found in the file.");
-                return;
-            }
-
-            boolean seriesFound = false;
-            System.out.println("Search results:");
-            for (Series series : seriesList) {
-                if (series.getTitle().toLowerCase().contains(query)) {
-                    System.out.println(series);
-                    seriesFound = true;
-                }
-            }
-
-            if (!seriesFound) {
-                System.out.println("No series found matching your query.");
-            }
-        } catch (Exception e) {
-            System.err.println("An error occurred during the search: " + e.getMessage());
-        }
-    }
-
     public String getSeriesGenre(){
         return genres;
     }
