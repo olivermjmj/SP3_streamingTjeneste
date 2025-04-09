@@ -112,7 +112,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         selectedPanel.hide();
         cb.setSelectedIndex(0);
         //listModelContent = new ContentListModel<>();
-        listModelContent.setVisible(3);
+        cb.setSelectedIndex(1);
+        listModelContent.setVisible(1);
+        listModelContent.sortRating(false);
         //list.setModel(listModelContent);
     }
 
@@ -143,6 +145,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             else // series
                 listModelContent.setVisible(2);
             selectedPanel.hide();
+        } else if (e.getSource() == ratingCb) {
+            listModelContent.sortRating(ratingCb.getSelectedIndex() == 1);
         }
     }
 

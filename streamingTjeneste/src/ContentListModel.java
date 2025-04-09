@@ -1,24 +1,34 @@
 import java.util.List;
 
 public class ContentListModel <E extends Content> extends javax.swing.AbstractListModel<E> {
-    List<Content> data;
-    ContentManager cman;
+    private List<Content> data;
+    private ContentManager cman;
+    private boolean lowestFirst;
 
     public ContentListModel() {
         cman = new ContentManager();
         data = cman.getContent();
     }
 
+    private void updateData() {
+        cman.sortRating(lowestFirst);
+        //data = cman.getContent();
+        fireContentsChanged(this, 0, getSize());
+    }
+
     public void setVisible(int visible) {
         cman.setVisible(visible);
-        data = cman.getContent();
-        fireContentsChanged(this, 0, getSize());
+        updateData();
     }
 
     public void filterTitle(String title) {
         cman.search(title);
-        data = cman.getContent();
-        fireContentsChanged(this, 0, getSize());
+        updateData();
+    }
+
+    public void sortRating(boolean lowestFirst) {
+        this.lowestFirst = lowestFirst;
+        updateData();
     }
 
     public int getSize() {
