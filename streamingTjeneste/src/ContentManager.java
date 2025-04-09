@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContentManager {
@@ -37,6 +38,13 @@ public class ContentManager {
                 data.add(s);
             }
         }
+    }
+
+    public void sortRating(boolean lowest) {
+        if (!lowest)
+            data.sort(Comparator.comparing(Content::getRating).reversed());
+        else
+            data.sort(Comparator.comparing(Content::getRating));
     }
 
     public void search(String title) {
