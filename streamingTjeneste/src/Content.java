@@ -1,6 +1,4 @@
 public class Content {
-    public static final int GENRE_CRIME = 1;
-    public static final int GENRE_DRAMA = 2;
 
     public final String genres;
     public final String title;
@@ -13,5 +11,4 @@ public class Content {
         this.genres = genres;
         this.rating = rating;
     }
-
 }
