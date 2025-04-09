@@ -118,6 +118,10 @@ import java.util.Scanner;
             }
         }
 
+        public String getMoviesGenre(){
+            return genres;
+        }
+
     }
 
 

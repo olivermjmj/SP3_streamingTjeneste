@@ -120,4 +120,8 @@ public class Series extends Content {
             System.err.println("An error occurred during the search: " + e.getMessage());
         }
     }
+
+    public String getSeriesGenre(){
+        return genres;
+    }
 }
