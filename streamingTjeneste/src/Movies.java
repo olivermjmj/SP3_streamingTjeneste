@@ -5,18 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-    public class Movies {
-        private final String title;
-        private final String genres;
-        private final int releaseYear;
-        private final double rating;
+    public class Movies extends Content {
+        //private final String title;
+        //private final String genres;
+        //private final int releaseYear;
+        //private final double rating;
         Scanner scanner = new Scanner(System.in);
 
-        public Movies(String title, String genres, int releaseYear, double rating) {
-            this.title = title;
-            this.genres = genres;
-            this.releaseYear = releaseYear;
-            this.rating = rating;
+        public Movies(String title, String genres, int releaseYear, float rating) {
+            super(title, releaseYear, genres, rating);
+            //this.title = title;
+            //this.genres = genres;
+            //this.releaseYear = releaseYear;
+            //this.rating = rating;
         }
 
         public String getTitle() {
@@ -54,8 +55,8 @@ import java.util.Scanner;
         }
 
         private static Movies parseMovieLine(String line) {
-            String[] values = line.split(",");
-            if (values.length < 4) {
+            String[] values = line.split(";");
+            if (values.length != 4) {
                 return null;
             }
 
@@ -80,9 +81,9 @@ import java.util.Scanner;
                 throw new IllegalArgumentException("Release year must be a valid integer.");
             }
 
-            double rating;
+            float rating;
             try {
-                rating = Double.parseDouble(ratingStr.replace(",", "."));
+                rating = Float.parseFloat(ratingStr.replace(",", "."));
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Rating must be a valid decimal number.");
             }

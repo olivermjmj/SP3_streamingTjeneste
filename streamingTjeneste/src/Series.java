@@ -5,19 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Series {
-    private final String title;
-    private final String genres;
-    private final int releaseYear;
-    private final double rating;
-    private final String seasonsAndEpisodes;
+public class Series extends Content {
+    //private final String title;
+    //private final String genres;
+    //private final int releaseYear;
+    //private final double rating;
+    public final String seasonsAndEpisodes;
     Scanner scanner = new Scanner(System.in);
 
-    public Series(String title, String genres, int releaseYear, double rating, String seasonsAndEpisodes) {
-        this.title = title;
-        this.genres = genres;
-        this.releaseYear = releaseYear;
-        this.rating = rating;
+    public Series(String title, String genres, int releaseYear, float rating, String seasonsAndEpisodes) {
+        super(title, releaseYear, genres, rating);
+        //this.title = title;
+        //this.genres = genres;
+        //this.releaseYear = releaseYear;
+        //this.rating = rating;
         this.seasonsAndEpisodes = seasonsAndEpisodes;
     }
 
@@ -55,16 +56,16 @@ public class Series {
     }
 
     private static Series parseSeriesLine(String line) {
-        String[] values = line.split(",");
-        if (values.length < 5) {
+        String[] values = line.split(";");
+        if (values.length != 5) {
             return null;
         }
 
         String title = values[0].trim();
         String releaseYearStr = values[1].trim();
         StringBuilder genresBuilder = new StringBuilder();
-        String seasonsAndEpisodes = values[values.length - 2].trim();
-        String ratingStr = values[values.length - 1].trim();
+        String seasonsAndEpisodes = values[values.length - 1].trim();
+        String ratingStr = values[values.length - 2].trim();
 
         for (int i = 2; i < values.length - 1; i++) {
             if (genresBuilder.isEmpty()) {
@@ -75,12 +76,12 @@ public class Series {
 
         String genres = genresBuilder.toString();
 
-        int releaseYear;
-        try {
-            releaseYear = Integer.parseInt(releaseYearStr);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Release year must be a valid integer.");
-        }
+        int releaseYear = 0;
+        //try {
+        //    releaseYear = Integer.parseInt(releaseYearStr);
+        //} catch (NumberFormatException e) {
+        //    throw new IllegalArgumentException("Release year must be a valid integer.");
+        //}
 
         double rating;
         try {
@@ -89,7 +90,7 @@ public class Series {
             throw new IllegalArgumentException("Rating must be a valid decimal number.");
         }
 
-        return new Series(title, genres, releaseYear, rating, seasonsAndEpisodes);
+        return new Series(title, genres, releaseYear, (float)rating, seasonsAndEpisodes);
     }
 
     private void searchForSeries() {

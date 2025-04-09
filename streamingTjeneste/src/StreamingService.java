@@ -33,7 +33,7 @@ public class StreamingService {
         frame.setSize(1280, 720);
         frame.setPreferredSize(new Dimension(1280, 720));
 
-        //frame.setIconImage(new ImageIcon("img/icon.png").getImage());
+        frame.setIconImage(new ImageIcon("data/img/icon.png").getImage());
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
