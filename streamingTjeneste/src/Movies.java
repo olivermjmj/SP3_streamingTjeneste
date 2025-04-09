@@ -1,71 +1,124 @@
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Movies extends Content {
+    public class Movies extends Content {
+        //private final String title;
+        //private final String genres;
+        //private final int releaseYear;
+        //private final double rating;
+        Scanner scanner = new Scanner(System.in);
 
-    public Movies(String title, int genres, int yearOfRelease, double rating) {
-        super(title, yearOfRelease, 0, (float) rating);
-    }
+        public Movies(String title, String genres, int releaseYear, float rating) {
+            super(title, releaseYear, genres, rating);
+            //this.title = title;
+            //this.genres = genres;
+            //this.releaseYear = releaseYear;
+            //this.rating = rating;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        @Override
+        public String toString() {
+            return "Title: " + title + ", Genres: " + genres + ", Release Year: " + releaseYear + ", Rating: " + rating;
+        }
 
 
-    public String getTitle() {
-        return title;
-    }
+        public static List<Movies> getMoviesFromCSV(String filePath) {
+            List<Movies> movies = new ArrayList<>();
 
-
-    @Override
-    public String toString() {
-        return "Title: " + title + ", Genres: " + genres + ", Release Year: " + yearOfRelease + ", Rating: " + rating;
-    }
-
-
-    public static List<Movies> getMovieData(String filePath) {
-        List<Movies> movies = new ArrayList<>(); // ArrayListe til at gemme film
-
-        try (Scanner scanner = new Scanner(new File(filePath))) { // Åbner filen ved hjælp af Scanner
-            while (scanner.hasNextLine()) { // Gennemgår hver linje i filen
-                String line = scanner.nextLine(); // Læser hver linje i filen
-
-                try {
-                    Movies movie = parseMovieDataLine(line); // Parser linjen til et Movie objekt
-                    if (movie != null) { // Hvis parsing lykkes
-                        movies.add(movie); // Tilføjer vi filmen til listen
-                    } else {
-                        System.out.println(" Ignoring line" + line); // Ignorerer linjen, hvis parsing fejler
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    try {
+                        Movies movie = parseMovieLine(line);
+                        if (movie != null) {
+                            movies.add(movie);
+                        } else {
+                            System.out.println("Ignoring malformed line: " + line);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error processing line: " + line + " - " + e.getMessage());
                     }
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error processing line: " + line + " - " + e.getMessage());
                 }
+            } catch (IOException e) {
+                System.err.println("Error reading the file: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
+
+            return movies;
         }
 
-        return movies; // Returnerer listen af film
-    }
+        private static Movies parseMovieLine(String line) {
+            String[] values = line.split(";");
+            if (values.length != 4) {
+                return null;
+            }
 
-    private static Movies parseMovieDataLine(String line) {
-        String[] values = line.split(","); // Opdeler linjen i sektioner (parametre) ved hvert komma
-        if (values.length < 4) { // Tjekker om der er tilstrækkelig parametre.
-            return null; // Returner null, hvis der mangler parametre
-        }
-
-        try {
             String title = values[0].trim();
-            int year = Integer.parseInt(values[1].trim()); // Årstallet konverteres til et heltal
-            int genres = Integer.parseInt(values[2].trim()); // Genrer konverteres til et heltal
-            float rating = Float.parseFloat(values[3].trim()); // Rating konverteres til en float
+            String releaseYearStr = values[1].trim();
+            StringBuilder genresBuilder = new StringBuilder();
+            String ratingStr = values[values.length - 1].trim();
 
-            return new Movies(title, year, genres, rating); // Opret og returnér en ny film
-        } catch (NumberFormatException e) {
-            System.err.println("Error parsing line: " + line + " - " + e.getMessage()); // printer fejlmeddelelse hvis der er parsing problemer
-            return null; // Returner null, hvis parsing fejler
+            for (int i = 2; i < values.length - 1; i++) {
+                if (genresBuilder.isEmpty()) {
+                    genresBuilder.append(", ");
+                }
+                genresBuilder.append(values[i].trim());
+            }
+
+            String genres = genresBuilder.toString();
+
+            int releaseYear;
+            try {
+                releaseYear = Integer.parseInt(releaseYearStr);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Release year must be a valid integer.");
+            }
+
+            float rating;
+            try {
+                rating = Float.parseFloat(ratingStr.replace(",", "."));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Rating must be a valid decimal number.");
+            }
+
+            return new Movies(title, genres, releaseYear, rating);
         }
+        private void searchForMovie() {
+            try {
+                System.out.print("Enter the title of the movie you are looking for: ");
+                String query = scanner.nextLine().trim().toLowerCase();
+
+                List<Movies> moviesList = Movies.getMoviesFromCSV("data/movies.csv");
+                if (moviesList.isEmpty()) {
+                    System.out.println("No movies found in the file.");
+                    return;
+                }
+
+                boolean movieFound = false;
+                System.out.println("Search results:");
+                for (Movies movies : moviesList) {
+                    if (movies.getTitle().toLowerCase().contains(query)) {
+                        System.out.println(movies);
+                        movieFound = true;
+                    }
+                }
+
+                if (!movieFound) {
+                    System.out.println("No movies found matching your query.");
+                }
+            } catch (Exception e) {
+                System.err.println("An error occurred during the search: " + e.getMessage());
+            }
+        }
+
     }
-}
 
 
 

@@ -18,6 +18,8 @@ public class StartMenu extends JPanel implements ActionListener {
     StartMenu() {
         this.setLayout(new GridBagLayout());
 
+        this.setBackground(new Color(197, 43, 40));
+
         JPanel inner = new JPanel();
         GroupLayout layout = new GroupLayout(inner);
         inner.setLayout(layout);

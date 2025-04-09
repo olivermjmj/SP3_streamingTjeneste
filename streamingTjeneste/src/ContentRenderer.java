@@ -11,10 +11,20 @@ public class ContentRenderer extends JLabel implements ListCellRenderer<Content>
     @Override
     public Component getListCellRendererComponent(JList<? extends Content> list, Content content, int index, boolean isSelected, boolean cellHasFocus) {
 
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("img/"+content.title+".jpg").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));;
+        String path = content.title.replace('\'', '_');
+        path = path.replace('&', '_');
+        ImageIcon imageIcon = null;
+        if (content instanceof Movies) {
+            imageIcon = new ImageIcon(new ImageIcon("data/img_movies/"+path+".jpg").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
+        } else if (content instanceof Series) {
+            imageIcon = new ImageIcon(new ImageIcon("data/img_series/"+path+".jpg").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
+        }
 
+        String title = content.title;
+        if (title.length() > 20)
+            title = title.substring(0,10)+"...";
         setIcon(imageIcon);
-        setText("<html><h1>"+content.title+"</h1><br>"+content.yearOfRelease+"<br>"+content.rating+"</html>");
+        setText("<html><h1>"+title+"</h1><br>"+content.releaseYear+"<br>"+content.rating+"</html>");
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
