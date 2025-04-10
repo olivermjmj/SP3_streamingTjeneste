@@ -43,6 +43,12 @@ public class ContentManager {
             }
             return;
         }
+        if ((visible & WATCH_AGAIN) != 0) {
+            for (Content c : StreamingService.user.watchAgain) {
+                data.add(c);
+            }
+            return;
+        }
         if ((visible & MOVIES) != 0) {
             for (Movies m : movies) {
                 data.add(m);
@@ -53,12 +59,7 @@ public class ContentManager {
                 data.add(s);
             }
         }
-        if ((visible & WATCH_AGAIN) != 0) {
-            for (Content c : StreamingService.user.watchAgain) {
-                data.add(c);
-            }
-            return;
-        }
+
     }
 
     public void sortRating(boolean lowest) {
@@ -74,6 +75,13 @@ public class ContentManager {
 
         if ((visible & WATCH_LATER) != 0) {
             for (Content c : StreamingService.user.watchLater) {
+                if (c.title.toLowerCase().contains(query))
+                    data.add(c);
+            }
+            return;
+        }
+        if ((visible & WATCH_AGAIN) != 0) {
+            for (Content c : StreamingService.user.watchAgain) {
                 if (c.title.toLowerCase().contains(query))
                     data.add(c);
             }
@@ -100,6 +108,13 @@ public class ContentManager {
         String queryGenres = genres.toLowerCase();
         if ((visible & WATCH_LATER) != 0) {
             for (Content c : StreamingService.user.watchLater) {
+                if (c.title.toLowerCase().contains(query) && c.genres.toLowerCase().contains(queryGenres))
+                    data.add(c);
+            }
+            return;
+        }
+        if ((visible & WATCH_AGAIN) != 0) {
+            for (Content c : StreamingService.user.watchAgain) {
                 if (c.title.toLowerCase().contains(query) && c.genres.toLowerCase().contains(queryGenres))
                     data.add(c);
             }
