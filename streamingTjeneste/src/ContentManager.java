@@ -7,8 +7,8 @@ public class ContentManager {
     private Series[] series;
     public static final int MOVIES = 1;
     public static final int SERIES = 2;
-    public static final int WATCH_AGAIN = 3;
     public static final int WATCH_LATER = 4;
+    public static final int WATCH_AGAIN = 8;
     private int visible;
 
     private List<Content> data = new ArrayList<>();
