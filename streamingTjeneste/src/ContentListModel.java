@@ -26,6 +26,11 @@ public class ContentListModel <E extends Content> extends javax.swing.AbstractLi
         updateData();
     }
 
+    public void filterTitleGenre(String title, String genres) {
+        cman.searchGenre(title, genres);
+        updateData();
+    }
+
     public void sortRating(boolean lowestFirst) {
         this.lowestFirst = lowestFirst;
         updateData();

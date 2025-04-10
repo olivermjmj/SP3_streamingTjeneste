@@ -83,4 +83,31 @@ public class ContentManager {
             }
         }
     }
+
+    public void searchGenre(String title, String genres) {
+        data.clear();
+
+        String query = title.toLowerCase();
+        String queryGenres = genres.toLowerCase();
+        if ((visible & WATCH_LATER) != 0) {
+            StreamingService.user.loadWatchLater(movies, series);
+            for (Content c : StreamingService.user.watchLater) {
+                if (c.title.toLowerCase().contains(query) && c.genres.toLowerCase().contains(queryGenres))
+                    data.add(c);
+            }
+            return;
+        }
+        if ((visible & MOVIES) != 0) {
+            for (Movies m : movies) {
+                if (m.title.toLowerCase().contains(query) && m.genres.toLowerCase().contains(queryGenres))
+                    data.add(m);
+            }
+        }
+        if ((visible & SERIES) != 0) {
+            for (Series s : series) {
+                if (s.title.toLowerCase().contains(query) && s.genres.toLowerCase().contains(queryGenres))
+                    data.add(s);
+            }
+        }
+    }
 }

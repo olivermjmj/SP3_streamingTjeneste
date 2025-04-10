@@ -24,7 +24,7 @@ public class ContentRenderer extends JLabel implements ListCellRenderer<Content>
         if (title.length() > 20)
             title = title.substring(0,10)+"...";
         setIcon(imageIcon);
-        setText("<html><h1>"+title+"</h1><br>"+content.releaseYear+"<br>"+content.rating+"</html>");
+        setText("<html><h1>"+title+"</h1><br>"+content.genres+"<br>"+content.releaseYear+"<br>"+content.rating+"</html>");
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());

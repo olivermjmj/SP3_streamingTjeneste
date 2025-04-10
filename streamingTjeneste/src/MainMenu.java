@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.List;
 
 public class MainMenu extends JPanel implements ActionListener, ListSelectionListener, ItemListener {
 
@@ -17,6 +16,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JButton playButton = new JButton("PLAY");
     private final JButton addWatchLaterButton = new JButton("Watch later");
     private final JTextField searchField = new JTextField();
+    private final JComboBox genreCb;
     private final JButton searchButton = new JButton("Search");
     private final JComboBox<String> cb;
     private JComboBox<String> ratingCb;
@@ -34,7 +34,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.weightx = 1;
-        gbc.weighty = 1;
+        gbc.weighty = 0;
 
         JPanel panelN = new JPanel();
         panelN.add(text);
@@ -48,6 +48,11 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         searchField.setPreferredSize(new Dimension(100,20));
         panelW.add(searchField, gbc);
 
+        gbc.gridy = 1;
+        String[] gchoices = {"All Genres", "Crime", "Drama"};
+        genreCb = new JComboBox<String>(gchoices);
+        panelW.add(genreCb, gbc);
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         searchButton.setPreferredSize(new Dimension(100,20));
@@ -55,14 +60,14 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         panelW.add(searchButton, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.weightx = 0.5;
-        String[] choices = {"Both", "Movies", "Series", "Watch later"};
+        String[] choices = {"Movies and Series", "Movies", "Series", "Watch later"};
         cb = new JComboBox<String>(choices);
         //cb.setMaximumSize(cb.getPreferredSize());
         cb.addItemListener(this);
         panelW.add(cb, gbc);
-        String[] rchoices = { "Highest", "Lowest" };
+        String[] rchoices = { "Highest Rating", "Lowest Rating" };
         ratingCb = new JComboBox<String>(rchoices);
         ratingCb.addItemListener(this);
         gbc.gridx = 1;
@@ -124,7 +129,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             if (c == null)
                 return;
             selectedPanel.show();
-            label.setText("<html><h1>"+c.title+"</h1><br>"+c.releaseYear+"<br>"+c.rating+"</html>");
+            label.setText("<html><h1>"+c.title+"</h1><br>"+c.genres+"<br>"+c.releaseYear+"<br>"+c.rating+"</html>");
             String path = c.title.replace('\'', '_');
             path = path.replace('&', '_');
             if (c instanceof Movies)
@@ -155,7 +160,10 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == searchButton) {
             selectedPanel.hide();
-            listModelContent.filterTitle(searchField.getText());
+            if (genreCb.getSelectedIndex() == 0)
+                listModelContent.filterTitle(searchField.getText());
+            else
+                listModelContent.filterTitleGenre(searchField.getText(), (String)genreCb.getSelectedItem());
         }
         if (e.getSource() == logoutButton) {
             StreamingService.user.save();
