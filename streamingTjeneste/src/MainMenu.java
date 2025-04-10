@@ -50,7 +50,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         panelW.add(searchField, gbc);
 
         gbc.gridy = 1;
-        String[] gchoices = {"All Genres", "Crime", "Drama"};
+        String[] gchoices = {"All Genres", "Crime", "Drama", "Adventure", "Romance","War", "Sci-Fi","Thriller"};
         genreCb = new JComboBox<String>(gchoices);
         panelW.add(genreCb, gbc);
 
