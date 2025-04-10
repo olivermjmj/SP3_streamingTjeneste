@@ -28,7 +28,7 @@ public class StreamingService {
         JFrame frame = new JFrame();
 
         // Set frame properties
-        frame.setTitle("Streaming Service");
+        frame.setTitle("Chill");
         frame.setResizable(true);
         frame.setSize(1280, 720);
         frame.setPreferredSize(new Dimension(1280, 720));
