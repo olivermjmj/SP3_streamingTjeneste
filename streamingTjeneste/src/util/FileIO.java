@@ -29,8 +29,8 @@ public class FileIO {
         ArrayList<String> lines = loadUserData(path);
 
         try (FileWriter writer = new FileWriter(path)) { //True append, makes it so we won't overwrite the existing file's content.
-            for(String line : lines) {
-                String[] parts = line.split(",");
+            for(int i = 0; i < lines.size(); i++) {
+                String[] parts = lines.get(i).split(",");
 
                 String inName = parts[0].trim();
                 String inData = parts[1].trim();
@@ -55,7 +55,6 @@ public class FileIO {
 
         try {
             Scanner scan = new Scanner(file);
-            scan.nextLine();//skip header;
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();   //"Bjarne, 123password"
                 data.add(line);
