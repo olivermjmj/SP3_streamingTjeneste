@@ -57,6 +57,7 @@ public class ContentManager {
             for (Content c : StreamingService.user.watchAgain) {
                 data.add(c);
             }
+            return;
         }
     }
 

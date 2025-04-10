@@ -230,7 +230,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             }
 
         }
+
         if (e.getSource() == removeWatchLaterButton) {
+
             Content c = list.getSelectedValue();
             if (c == null) {
                 return;
@@ -246,7 +248,10 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 else
                     listModelContent.filterTitleGenre(searchField.getText(), (String)genreCb.getSelectedItem());
                 JOptionPane.showMessageDialog(this, "removed from 'watch later'");
+
+
             }
+
         }
     }
 }
