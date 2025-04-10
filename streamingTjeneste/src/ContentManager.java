@@ -53,7 +53,7 @@ public class ContentManager {
             }
         }
         if((visible & WATCH_AGAIN) != 0) {
-            StreamingService.user.loadContentWatched(movies, series);
+
             for (Content c : StreamingService.user.watchAgain) {
                 data.add(c);
             }

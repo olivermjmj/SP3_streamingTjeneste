@@ -187,7 +187,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 listModelContent.filterTitleGenre(searchField.getText(), (String)genreCb.getSelectedItem());
         }
         if (e.getSource() == logoutButton) {
-            StreamingService.user.save();
+
             StreamingService.user = null;
             StreamingService.showStartMenu();
         }
