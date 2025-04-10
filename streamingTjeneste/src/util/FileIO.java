@@ -17,12 +17,34 @@ public class FileIO {
             writer.append(',');
             writer.append(password);
             writer.append('\n');
-
+            writer.close();
             System.out.println("Data skrevet til filen!");
         } catch (IOException e) {
 
             System.out.println("Something went wrong with saveUserData");
         }
+    }
+
+    public void deleteUserData(String path, String username, String data) {
+        ArrayList<String> lines = loadUserData(path);
+
+        try (FileWriter writer = new FileWriter(path)) { //True append, makes it so we won't overwrite the existing file's content.
+            for(String line : lines) {
+                String[] parts = line.split(",");
+
+                String inName = parts[0].trim();
+                String inData = parts[1].trim();
+
+                if (!(inName.equals(username) && inData.equals(data))) {
+                    writer.write(inName+", "+inData+"\n");
+                }
+            }
+            writer.close();
+        } catch (IOException e) {
+
+            System.out.println("Something went wrong with saveUserData");
+        }
+
     }
 
     public ArrayList<String> loadUserData(String path) {

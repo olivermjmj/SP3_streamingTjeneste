@@ -10,6 +10,10 @@ public class ContentListModel <E extends Content> extends javax.swing.AbstractLi
         data = cman.getContent();
     }
 
+    public void loadData() {
+        cman.loadData();
+    }
+
     private void updateData() {
         cman.sortRating(lowestFirst);
         //data = cman.getContent();

@@ -22,7 +22,10 @@ public class ContentManager {
         series = new Series[serieList.size()];
         series = serieList.toArray(series);
         visible = MOVIES;
+    }
 
+    public void loadData() {
+        StreamingService.user.loadWatchLater(movies, series);
     }
 
     public List<Content> getContent() {
@@ -34,7 +37,6 @@ public class ContentManager {
         this.visible = visible;
 
         if ((visible & WATCH_LATER) != 0) {
-            StreamingService.user.loadWatchLater(movies, series);
             for (Content c : StreamingService.user.watchLater) {
                 data.add(c);
             }
@@ -70,7 +72,6 @@ public class ContentManager {
         String query = title.toLowerCase();
 
         if ((visible & WATCH_LATER) != 0) {
-            StreamingService.user.loadWatchLater(movies, series);
             for (Content c : StreamingService.user.watchLater) {
                 if (c.title.toLowerCase().contains(query))
                     data.add(c);
@@ -97,7 +98,6 @@ public class ContentManager {
         String query = title.toLowerCase();
         String queryGenres = genres.toLowerCase();
         if ((visible & WATCH_LATER) != 0) {
-            StreamingService.user.loadWatchLater(movies, series);
             for (Content c : StreamingService.user.watchLater) {
                 if (c.title.toLowerCase().contains(query) && c.genres.toLowerCase().contains(queryGenres))
                     data.add(c);
