@@ -63,7 +63,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.5;
-        String[] choices = {"Movies and Series", "Movies", "Series", "Watch later"};
+        String[] choices = {"Movies and Series", "Movies", "Series", "Watch later", "Watch Again"};
         cb = new JComboBox<String>(choices);
         //cb.setMaximumSize(cb.getPreferredSize());
         cb.addItemListener(this);
@@ -157,7 +157,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 listModelContent.setVisible(ContentManager.SERIES);
             else if (idx == 3)
                 listModelContent.setVisible(ContentManager.WATCH_LATER);
-            if (idx < 3) { // not user watch data
+            else if (idx == 4)
+                listModelContent.setVisible(ContentManager.WATCH_AGAIN);
+            if (idx < 4) { // not user watch data
                 removeWatchLaterButton.hide();
                 addWatchLaterButton.show();
             } else {

@@ -8,6 +8,7 @@ public class ContentManager {
     public static final int MOVIES = 1;
     public static final int SERIES = 2;
     public static final int WATCH_LATER = 4;
+    public static final int WATCH_AGAIN = 8;
     private int visible;
 
     private List<Content> data = new ArrayList<>();
@@ -50,6 +51,12 @@ public class ContentManager {
             for (Series s : series) {
                 data.add(s);
             }
+        }
+        if ((visible & WATCH_AGAIN) != 0) {
+            for (Content c : StreamingService.user.watchAgain) {
+                data.add(c);
+            }
+            return;
         }
     }
 
