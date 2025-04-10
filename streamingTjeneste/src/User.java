@@ -122,7 +122,7 @@ public class User {
     public boolean loadContentWatched(Movies[] allMovies, Series[] allSeries) {
 
         watchAgain.clear();
-        ArrayList<String> lines = IO.loadUserData("data/watchLaterData.csv");
+        ArrayList<String> lines = IO.loadUserData("data/userHasWatchedData.csv");
 
         for(String line : lines) {
 

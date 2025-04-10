@@ -190,10 +190,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 return;
             }
 
-            boolean alreadyAdded = User.addContentWatched(StreamingService.user.name, c.title);
+            if(!StreamingService.user.watchAgain.contains(c)) {
 
-            if(alreadyAdded) {
-
+                StreamingService.user.watchAgain.add(c);
                 User.addContentWatched(StreamingService.user.name, c.title);
                 JOptionPane.showMessageDialog(this, "You are now watching " + c.title + " for the first time!");
             } else {
