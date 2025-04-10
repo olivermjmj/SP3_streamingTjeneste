@@ -14,7 +14,10 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JPanel selectedPanel = new JPanel();
     private final JLabel label= new JLabel();
     private final JButton playButton = new JButton("PLAY");
+
     private final JButton addWatchLaterButton = new JButton("Watch later");
+    private final JButton removeWatchLaterButton = new JButton("Remove from Watch Later"); //Sprint5
+
     private final JTextField searchField = new JTextField();
     private final JComboBox genreCb;
     private final JButton searchButton = new JButton("Search");
@@ -62,7 +65,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.5;
-        String[] choices = {"Movies and Series", "Movies", "Series", "Watch later"};
+        String[] choices = {"Movies and Series", "Movies", "Series", "Watch later", "Watch Again"};
         cb = new JComboBox<String>(choices);
         //cb.setMaximumSize(cb.getPreferredSize());
         cb.addItemListener(this);
@@ -93,9 +96,13 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         playButton.setBackground(Color.RED);
         playButton.setForeground(Color.WHITE);
         selectedPanel.add(playButton);
+
         addWatchLaterButton.addActionListener(this);
         selectedPanel.add(addWatchLaterButton);
         selectedPanel.hide();
+
+
+
         panelC.add(selectedPanel, BorderLayout.NORTH);
         panelC.add(scrollPane, BorderLayout.CENTER);
 
@@ -141,7 +148,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
     @Override
     public void itemStateChanged(ItemEvent e) {
+
         if (e.getSource() == cb) {
+
             if (cb.getSelectedIndex() == 0) // both
                 listModelContent.setVisible(ContentManager.MOVIES | ContentManager.SERIES);
             else if (cb.getSelectedIndex() == 1) // movies
@@ -150,6 +159,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 listModelContent.setVisible(ContentManager.SERIES);
             else if (cb.getSelectedIndex() == 3)
                 listModelContent.setVisible(ContentManager.WATCH_LATER);
+            else if (cb.getSelectedIndex() == 4);
+                listModelContent.setVisible(ContentManager.WATCH_AGAIN);
             selectedPanel.hide();
         } else if (e.getSource() == ratingCb) {
             listModelContent.sortRating(ratingCb.getSelectedIndex() == 1);
@@ -208,7 +219,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
                 JOptionPane.showMessageDialog(this, c.title + " has already been added to 'Watch Later'");
             }
-
         }
     }
 }
