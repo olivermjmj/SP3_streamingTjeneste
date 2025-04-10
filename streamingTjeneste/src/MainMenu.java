@@ -159,7 +159,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 listModelContent.setVisible(ContentManager.WATCH_LATER);
             else if (idx == 4)
                 listModelContent.setVisible(ContentManager.WATCH_AGAIN);
-            if (idx < 4) { // not user watch data
+            if (idx < 3) { // not user watch data
                 removeWatchLaterButton.hide();
                 addWatchLaterButton.show();
             } else {
