@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends JPanel implements ActionListener, ListSelectionListener, ItemListener {
@@ -15,9 +14,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private Series[] series;
     private DefaultListModel<Content> listModel;
     private DefaultListModel<Content> listModelSeries;
-    private DefaultListModel<Content> listModelWatchLater;
-    private DefaultListModel<Content> listModelWatchAgain;
-
     private final JButton logoutButton;
     private final JLabel text;
     private final JPanel selectedPanel = new JPanel();
@@ -66,7 +62,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.5;
-        String[] choices = {"Both", "Movies", "Series", "Watch Later", "Watch Again"};
+        String[] choices = {"Both", "Movies", "Series"};
         cb = new JComboBox<String>(choices);
         //cb.setMaximumSize(cb.getPreferredSize());
         cb.addItemListener(this);
@@ -83,21 +79,8 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         panelC.setMinimumSize(new Dimension(0, 0));
 
         // Content view
-        List<Movies> moviesList = Movies.getMoviesFromCSV("data/movieData.csv");
-        movies = new Movies[moviesList.size()];
-        movies = moviesList.toArray(movies);
-
-        List<Series> seriesList = Series.getSeriesFromCSV("data/seriesData.csv");
-        series = new Series[seriesList.size()];
-        series = seriesList.toArray(series);
-
-
-        listModel = new DefaultListModel<>();
-        listModelSeries = new DefaultListModel<>();
-        listModelWatchLater = new DefaultListModel<>();
-        listModelWatchAgain = new DefaultListModel<>();
-
-        list = new JList<>(listModel);
+        listModelContent = new ContentListModel<>();
+        list = new JList<>(listModelContent);
         list.setVisibleRowCount(0);
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -132,29 +115,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         searchField.setText("");
         selectedPanel.hide();
         cb.setSelectedIndex(0);
-        listModel = new DefaultListModel<>();
-
-        for (int i = 0; i < movies.length; i++) {
-            listModel.addElement(movies[i]);
-        }
-        listModelSeries = new DefaultListModel<>();
-
-        for (int i = 0; i < series.length; i++) {
-            listModelSeries.addElement(series[i]);
-        }
-        list.setModel(listModel);
-
-        //Loads 'Watch Later'
-        StreamingService.user.loadWatchLater(new ArrayList<>(List.of(movies)), new ArrayList<>(List.of(series)));
-
-        listModelWatchLater = new DefaultListModel<>();
-        //Fills the 'Watch Later' list
-        for (int i = 0; i < StreamingService.user.watchLater.size(); i++) {
-            listModelWatchLater.addElement(StreamingService.user.watchLater.get(i));
-        }
-
-
-        //Have no idea, on how to show the watch again list
         //listModelContent = new ContentListModel<>();
         cb.setSelectedIndex(1);
         listModelContent.setVisible(1);
@@ -182,51 +142,24 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == cb) {
-
+            if (cb.getSelectedIndex() == 0) // both
+                listModelContent.setVisible(3);
+            else if (cb.getSelectedIndex() == 1) // movies
+                listModelContent.setVisible(1);
+            else // series
+                listModelContent.setVisible(2);
             selectedPanel.hide();
-
-            if (cb.getSelectedItem().equals("Series")) {
-
-                list.setModel(listModelSeries);
-            } else if(cb.getSelectedItem().equals("Movies")){
-
-                list.setModel(listModel);
-            } else if(cb.getSelectedItem().equals("Watch Later")) {
-
-                list.setModel(listModelWatchLater);
-            } else if(cb.getSelectedItem().equals("Watch Again")) {
-
-                list.setModel(listModelWatchAgain);
-            }
+        } else if (e.getSource() == ratingCb) {
+            listModelContent.sortRating(ratingCb.getSelectedIndex() == 1);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == searchButton) {
-            String query = searchField.getText().toLowerCase();
-            if (cb.getSelectedIndex() == 0) {
-                for (Movies movie : movies) {
-                    if (movie.title.toLowerCase().contains(query)) {
-                        if (!listModel.contains(movie))
-                            listModel.addElement(movie);
-                    } else if (listModel.contains(movie)) {
-                        listModel.removeElement(movie);
-                    }
-                }
-
-            } else if (cb.getSelectedIndex() == 1) {
-                for (Series serie : series) {
-                    if (serie.title.toLowerCase().contains(query)) {
-                        if (!listModelSeries.contains(serie))
-                            listModelSeries.addElement(serie);
-                    } else if (listModelSeries.contains(serie)) {
-                        listModelSeries.removeElement(serie);
-                    }
-                }
-            }
+            selectedPanel.hide();
+            listModelContent.filterTitle(searchField.getText());
         }
-
         if (e.getSource() == logoutButton) {
             StreamingService.user.save();
             StreamingService.user = null;
@@ -236,7 +169,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
         //Plays and adds a given piece of content to a 'User has Watched' list
         if (e.getSource() == playButton) {
-
             Content c = list.getSelectedValue();
             if (c == null) {
                 return;
@@ -257,7 +189,6 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
 
         //Add to 'Watch Later' list
         if (e.getSource() == addWatchLaterButton) {
-
             Content c = list.getSelectedValue();
             if (c == null) {
                 return;
