@@ -7,7 +7,7 @@ public class User {
 
     public String name;
     public ArrayList<Content> watchLater = new ArrayList<>();
-
+    public ArrayList<Content> watchAgain = new ArrayList<>();
     static TextUI UI = new TextUI();
     static FileIO IO = new FileIO();
 
@@ -114,6 +114,46 @@ public class User {
         return true;
     }
 
+    public boolean loadWatchAgain(Movies[] allMovies, Series[] allSeries) {
+
+        watchAgain.clear();
+        ArrayList<String> lines = IO.loadUserData("data/userHasWatchedData.csv");
+
+        for(String line : lines) {
+
+            String[] parts = line.split(",");
+
+            String username = parts[0].trim();
+            String title = parts[1].trim();
+
+            if(!username.equals(this.name)) {
+
+                return false;
+            }
+
+
+            for(Movies m : allMovies) {
+
+                if(m.title.equalsIgnoreCase(title)) {
+
+                    watchAgain.add(m);
+                }
+            }
+
+
+            for(Series s : allSeries) {
+
+                if(s.title.equalsIgnoreCase(title)) {
+
+                    watchAgain.add(s);
+                }
+            }
+
+
+        }
+
+        return true;
+    }
 
     public static boolean addContentWatched(String username, String title) {
 
