@@ -29,7 +29,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JComboBox<String> cb;
     private JComboBox<String> ratingCb;
     private JList<Content> list;
-    private ContentListModel<Content> listModelContent;
+    private ContentListModel<Content> listModelContent = new ContentListModel<>();
     List<Movies> moviesList;
 
     MainMenu() {
