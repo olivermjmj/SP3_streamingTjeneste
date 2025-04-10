@@ -14,13 +14,33 @@ public class StartMenu extends JPanel implements ActionListener {
     JButton registerButton = new JButton("REGISTER");
     JCheckBox showPassword = new JCheckBox("Show Password");
     JLabel msgLabel = new JLabel("");
+    JLabel chillLabel = new JLabel("Chill");
+
 
     StartMenu() {
-        this.setLayout(new GridBagLayout());
+        BackgroudPanel backgroud = new BackgroudPanel("data/img/The Godfather part II.jpg");
+        backgroud.setLayout(new BoxLayout(backgroud, BoxLayout.Y_AXIS));
 
-        this.setBackground(new Color(197, 43, 40));
+        chillLabel.setFont(new Font("Arial" ,Font.BOLD, 40));
+        chillLabel.setForeground(Color.RED);
+        chillLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        chillLabel.setMaximumSize(new Dimension(300, 200));
+        chillLabel.setPreferredSize(new Dimension(300, 200));
+        chillLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userTextField.setMaximumSize(new Dimension(150, 25));
+        passwordField.setMaximumSize(new Dimension(150, 25));
+
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        //this.setBackground(new Color(255, 255, 255));
 
         JPanel inner = new JPanel();
+        inner.setOpaque(false);
+        inner.setMaximumSize(new Dimension(400,200));
+        inner.setPreferredSize(new Dimension(300,200));
+        inner.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         GroupLayout layout = new GroupLayout(inner);
         inner.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -62,7 +82,20 @@ public class StartMenu extends JPanel implements ActionListener {
         showPassword.addActionListener(this);
         passwordField.setEchoChar('*');
 
-        this.add(inner);
+        backgroud.add(Box.createHorizontalGlue());
+        backgroud.add(chillLabel);
+        backgroud.add(Box.createVerticalStrut(50));
+        backgroud.add(inner);
+        backgroud.add(Box.createVerticalGlue());
+
+        this.add(Box.createVerticalStrut(20)); // spacing
+        this.add(chillLabel);
+        this.setLayout(new BorderLayout());
+        this.add(backgroud, BorderLayout.CENTER);
+
+
+
+
         this.setVisible(true);
     }
 
