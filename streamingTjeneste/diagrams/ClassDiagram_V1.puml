@@ -1,147 +1,246 @@
-@startuml
-'https://plantuml.com/class-diagram
+@startuml StreamingServiceDiagram
 
-class Main {
-    + main(String[] args)
+' ------------------------------------------------------------
+' Samlet Swing-komponent - Grupperer alle standard Swing-elementer
+class "Java Swing" {
+    + JFrame
+    + JPanel
+    + JButton
+    + JLabel
+    + JTextField
+    + JPasswordField
+    + JCheckBox
+    + JComboBox
+    + JList
+    --
+    + ActionListener
+    + ItemListener
+    + ListSelectionListener
 }
+note right of "Java Swing"
+"Java Swing" som er en blanding af de indbygget klasser JPanel og JLabel
+tager sig af alt grafiske.
+JLabel: Viser eksempelvis Strings, som i MainMenu update() "Welcome"
+JPanel: Bruges til visuelle knapper man kan trykke på, eksempelvis playButton el. watchLater
+end note
 
-class Exit {
-    - Logout()
-    - System.stop()
-
+' ------------------------------------------------------------
+' GUI-klasser baseret på Swing
+class MainMenu {
+    - JButton logoutButton
+    - JLabel text
+    - JPanel selectedPanel
+    - JLabel label
+    - JButton playButton
+    - JButton addWatchLaterButton
+    - JButton removeButton
+    - JTextField searchField
+    - JComboBox genreCb
+    - JButton searchButton
+    - JComboBox<String> cb
+    - JComboBox<String> ratingCb
+    - JList<Content> list
+    - ContentListModel<Content> listModelContent
+    --
+    + MainMenu()
+    + update(): void
+    + valueChanged(ListSelectionEvent): void
+    + itemStateChanged(ItemEvent): void
+    + actionPerformed(ActionEvent): void
 }
-
-class Logout {
-   + returnToStartMenu()
-}
-
-class StreamingService {
-    + static User user = null
-    + static Start()
-}
+note right of MainMenu
+  MainMenu håndterer brugerinteraktionen i hovedmenuen, herunder opdatering og filtrering af indhold.
+end note
 
 class StartMenu {
-    User.register
-    StreamingService.user = User.login
-    + run()
+    - JLabel userLabel
+    - JLabel passwordLabel
+    - JTextField userTextField
+    - JLabel msg
+    - JPasswordField passwordField
+    - JButton loginButton
+    - JButton registerButton
+    - JCheckBox showPassword
+    - JLabel msgLabel
+    --
+    + StartMenu()
+    + actionPerformed(ActionEvent): void
 }
+note right of StartMenu
+  StartMenu håndterer bruger login og registrering via actionPerformed metoden.
+end note
 
-
-class Play {
-   + watchShow()
-
+class ContentRenderer {
+    --
+    + ContentRenderer()
+    + getListCellRendererComponent(JList, Content, int, boolean, boolean): Component
 }
+note right of ContentRenderer
+  ContentRenderer sørger for korrekt visning af Content-objekter i en liste.
+end note
 
-abstract class MainMenu{
+' ------------------------------------------------------------
+' Forretnings- og hjernelogik-klasser
+class StreamingService {
+    - User user
+    --
+    + showStartMenu(): void
+    + showMainMenu(): void
+    + start(): void
+}
+note right of StreamingService
+  StreamingService initialiserer koden og bruger noget GUI.
+end note
 
-
-    + WatchHistoryDATA / continue watching
-    + WatchLater // UserWatchLaterData
-
-    - Logout
-    - abstract  returnToMainMenu{}
-    + Search
-    + run();
-    + exit();
+class Main {
+    --
+    + main(String[] args): void
 }
 
 class User {
-    + static User login(name, passwd)
-    + static boolean register(name, passwd)
-    ---
     + String name
-
-    + watchhistorydata
-    + watchLater
-
-    + User(name)konstruktor
-    + save()watchhistorydata
+    + ArrayList<Content> watchLater
+    + ArrayList<Content> watchAgain
+    --
+    + User(String)
+    + login(String, String): User
+    + register(String, String): boolean
+    + userLoggingIn(String): boolean
+    + userLoggingIn(String, String): boolean
+    + loadWatchLater(Movies[], Series[]): boolean
+    + loadWatchAgain(Movies[], Series[]): boolean
+    + addContentWatched(String): void
+    + removeContentWatched(String): void
+    + addWatchLater(String): void
+    + removeWatchLater(String): void
 }
+note right of User
+  User håndterer brugerdata og gemmer referencer til listerne 'watchLater' og 'watchAgain'.
+end note
 
 class Content {
-    CRIME = 1
-    DRAMA = 2
-    ETC = 4
-    ---
-    + final int genres // bitfield
-    + final String title
-    + final int yearOfRelease
-    + final float rating
-
-    + final short seasons[]
-
-    + Content(title, year, genres, rating)
-    + Content(title, year, rating, genres, seasons)
+    + String title
+    + String genres
+    + int releaseYear
+    + float rating
+    --
+    + getRating(): float
 }
+note right of Content
+  Content er basisklassen for både Movies og Series.
+
+end note
+
+class Movies {
+    --
+    + Movies(String, String, int, float)
+    + getMoviesFromCSV(String): List<Movies>
+    + getTitle(): String
+    + getMoviesGenre(): String
+}
+note right of Movies
+  Movies håndterer film-relateret data.
+end note
+
+class Series {
+    + String seasonsAndEpisodes
+    --
+    + Series(String, String, int, float, String)
+    + getSeriesFromCSV(String): List<Series>
+    + getTitle(): String
+    + getSeriesGenre(): String
+}
+note right of Series
+  Series håndterer serie-relateret data.
+end note
 
 class ContentManager {
-    Content[]
-    - int genreFilter
-
+    + MOVIES: int
+    + SERIES: int
+    + WATCH_LATER: int
+    + WATCH_AGAIN: int
+    --
     + ContentManager()
-    + loadData(filename)
-    + int[] search()
-    + void setGenreFilter(int genres)
+    + loadData(): void
+    + getContent(): List<Content>
+    + setVisible(int): void
+    + sortRating(boolean): void
+    + search(String): void
+    + searchGenre(String, String): void
 }
 
-class ChooseToWatchLater {
-    + addShow()
+class ContentListModel  {
+    --
+    + ContentListModel()
+    + loadData(): void
+    + setVisible(int): void
+    + filterTitle(String): void
+    + filterTitleGenre(String, String): void
+    + sortRating(boolean): void
+    + getSize(): int
+    + getElementAt(int)
 }
+note right of ContentListModel
+  ContentListModel implementerer ListSelectionListener og interagerer med ContentManager for at opdatere visningen.
+end note
 
-class WatchAgain {
-    showHistoryData()
-    returnToMainMenu{}
-}
+' ------------------------------------------------------------
+' Arv- og associationsrelationer
+Content <|-- Movies
+Content <|-- Series
 
-class ChooseGenre {
-    List <Content> availableGenres
-}
+ContentManager o-- Content : Aggregation
+note right of ContentManager
+  Aggregation: ContentManager indeholder Content-objekter, men disse eksisterer uafhængigt.
+  ContentManager styrer også hentning og filtrering af Content.
+end note
+
+ContentListModel --> ContentManager
+
+User --> Content : User bruger 'watchLater' og 'watchAgain'-lister, men Content er uafhængig
+
+StreamingService --> User
+StreamingService --> "Java Swing" : bruger
+
+"Java Swing" <|-- MainMenu
+"Java Swing" <|-- StartMenu
+"Java Swing" <|-- ContentRenderer
+ContentListModel --|> "Java Swing" : Implementerer ListSelectionListener
+
+' ------------------------------------------------------------
+' Afhængighedspile (dependencies) der viser metodekald mellem klasser
+
+' Main's main() metode kalder StreamingService.start()
+Main --> StreamingService : calls main() \n-> start()
+note left of Main
+  Main's entrypoint kalder start() i StreamingService for at starte koden.
+end note
+
+' StreamingService instansierer og kalder GUI-komponenter
+StreamingService --> StartMenu : instansieres og \nkalder showStartMenu()
+StreamingService --> MainMenu  : instansieres og \nkalder showMainMenu()
+note left of StreamingService
+  StreamingService displayer StartMenu og MainMenu's GUI (Graphical User Interface).
+end note
 
 
-package "Util" {
-    class FileIO {
-    + void saveData(ArrayList<String> data, String path, String header)
-    + ArrayList<String> readData(String path)
-    + String[] readData(String path, int length)
-    }
-    class TextUI {
-    - Scanner scan
-    + boolean promptBinary(String msg)
-    + String promptText(String msg)
-    + int promptNumeric(String msg)
-    + ArrayList<String> promptChoice(ArrayList<String> options, int limit, String msg)
-    + void displayMessage(String msg)
-    + void displayList(ArrayList<String> list, String msg)
-    }
-}
+' I StartMenu.actionPerformed() afhænger der af User for login/registrering
+StartMenu --> User : Dependency \n-> login()/register()
+note left of StartMenu
+  StartMenu benytter User-klassen til at håndtere login og registrering.
+end note
 
-class Search {
-    + searchContentManager()
-}
+' MainMenu bruger ContentListModel og ContentManager til filtrering og søgning
+MainMenu --> ContentListModel : Dependency \n-> filterTitle()/sortRating()
+MainMenu --> ContentManager : via listModelContent \n-> search()/searchGenre()
+note left of MainMenu
+  MainMenu kalder metoder for at filtrere og sortere indhold samt udføre søgninger.
+end note
 
-class WatchLater {
-    + viewWatchLater()
-}
-
-StreamingService *-- User
-Main *-- StreamingService
-StreamingService *-- StartMenu
-StreamingService *-- MainMenu
-
-StartMenu *-- User
-
-MainMenu *-- Search
-MainMenu *-- Content
-MainMenu *-- ContentManager
-ContentManager *-- Content
-MainMenu *-- WatchLater
-MainMenu *-- WatchAgain
-MainMenu *--ChooseGenre
-
-MainMenu *- ChooseToWatchLater
-MainMenu *-- Play
-MainMenu *-- Exit
-MainMenu *-- Logout
-StreamingService *- Util
+' ContentRenderer kalder metoder på Content for at få visningsdata
+ContentRenderer --> Content : Dependency \n-> getTitle()
+note left of ContentRenderer
+  ContentRenderer anvender Content for at hente data til visning i lister.
+end note
 
 @enduml
