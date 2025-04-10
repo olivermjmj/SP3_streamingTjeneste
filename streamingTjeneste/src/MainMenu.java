@@ -10,10 +10,6 @@ import java.util.List;
 
 public class MainMenu extends JPanel implements ActionListener, ListSelectionListener, ItemListener {
 
-    private Movies[] movies;
-    private Series[] series;
-    private DefaultListModel<Content> listModel;
-    private DefaultListModel<Content> listModelSeries;
     private final JButton logoutButton;
     private final JLabel text;
     private final JPanel selectedPanel = new JPanel();
@@ -25,8 +21,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JComboBox<String> cb;
     private JComboBox<String> ratingCb;
     private JList<Content> list;
-    private ContentListModel<Content> listModelContent = new ContentListModel<>();
-    List<Movies> moviesList;
+    private ContentListModel<Content> listModelContent;
 
     MainMenu() {
         this.setLayout(new BorderLayout());
@@ -62,7 +57,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.5;
-        String[] choices = {"Both", "Movies", "Series"};
+        String[] choices = {"Both", "Movies", "Series", "Watch later"};
         cb = new JComboBox<String>(choices);
         //cb.setMaximumSize(cb.getPreferredSize());
         cb.addItemListener(this);
@@ -143,11 +138,13 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == cb) {
             if (cb.getSelectedIndex() == 0) // both
-                listModelContent.setVisible(3);
+                listModelContent.setVisible(ContentManager.MOVIES | ContentManager.SERIES);
             else if (cb.getSelectedIndex() == 1) // movies
-                listModelContent.setVisible(1);
-            else // series
-                listModelContent.setVisible(2);
+                listModelContent.setVisible(ContentManager.MOVIES);
+            else if (cb.getSelectedIndex() == 2) // series
+                listModelContent.setVisible(ContentManager.SERIES);
+            else if (cb.getSelectedIndex() == 3)
+                listModelContent.setVisible(ContentManager.WATCH_LATER);
             selectedPanel.hide();
         } else if (e.getSource() == ratingCb) {
             listModelContent.sortRating(ratingCb.getSelectedIndex() == 1);

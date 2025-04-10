@@ -77,8 +77,9 @@ public class User {
     }
 
 
-    public boolean loadWatchLater(ArrayList<Movies> allMovies, ArrayList<Series> allSeries) {
+    public boolean loadWatchLater(Movies[] allMovies, Series[] allSeries) {
 
+        watchLater.clear();
         ArrayList<String> lines = IO.loadUserData("data/watchLaterData.csv");
 
         for(String line : lines) {
