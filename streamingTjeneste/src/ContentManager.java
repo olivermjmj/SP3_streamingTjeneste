@@ -26,6 +26,7 @@ public class ContentManager {
 
     public void loadData() {
         StreamingService.user.loadWatchLater(movies, series);
+        StreamingService.user.loadWatchAgain(movies, series);
     }
 
     public List<Content> getContent() {
