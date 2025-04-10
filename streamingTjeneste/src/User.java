@@ -155,21 +155,15 @@ public class User {
         return true;
     }
 
-    public static boolean addContentWatched(String username, String title) {
+    public void addContentWatched(String title) {
 
         String filePath = "data/userHasWatchedData.csv";
-        ArrayList<String> lines = IO.loadUserData(filePath);
 
-        for(String line : lines) {
+        IO.saveUserData(filePath, this.name, title);
+    }
 
-            if(line.equalsIgnoreCase(username + "," + title)) {
-
-                return false; //This content has already been watched and saved.
-            }
-        }
-
-        IO.saveUserData(filePath, username, title);
-        return true;
+    public void removeContentWatched(String title) {
+        IO.deleteUserData("data/userHasWatchedData.csv", this.name, title);
     }
 
     public void addWatchLater(String title) {

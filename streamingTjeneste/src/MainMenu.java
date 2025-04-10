@@ -15,7 +15,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JLabel label= new JLabel();
     private final JButton playButton = new JButton("PLAY");
     private final JButton addWatchLaterButton = new JButton("Watch later");
-    private final JButton removeWatchLaterButton = new JButton("Remove");
+    private final JButton removeButton = new JButton("Remove");
     private final JTextField searchField = new JTextField();
     private final JComboBox genreCb;
     private final JButton searchButton = new JButton("Search");
@@ -96,9 +96,9 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         selectedPanel.add(playButton);
         addWatchLaterButton.addActionListener(this);
         selectedPanel.add(addWatchLaterButton);
-        removeWatchLaterButton.addActionListener(this);
-        selectedPanel.add(removeWatchLaterButton);
-        removeWatchLaterButton.hide();
+        removeButton.addActionListener(this);
+        selectedPanel.add(removeButton);
+        removeButton.hide();
 
         selectedPanel.hide();
         panelC.add(selectedPanel, BorderLayout.NORTH);
@@ -160,10 +160,10 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             else if (idx == 4)
                 listModelContent.setVisible(ContentManager.WATCH_AGAIN);
             if (idx < 3) { // not user watch data
-                removeWatchLaterButton.hide();
+                removeButton.hide();
                 addWatchLaterButton.show();
             } else {
-                removeWatchLaterButton.show();
+                removeButton.show();
                 addWatchLaterButton.hide();
             }
             selectedPanel.hide();
@@ -194,14 +194,12 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
                 return;
             }
 
-            boolean alreadyAdded = User.addContentWatched(StreamingService.user.name, c.title);
 
-            if(alreadyAdded) {
-
-                User.addContentWatched(StreamingService.user.name, c.title);
+            if(!StreamingService.user.watchAgain.contains(c)) {
+                StreamingService.user.watchAgain.add(c);
+                StreamingService.user.addContentWatched(c.title);
                 JOptionPane.showMessageDialog(this, "You are now watching " + c.title + " for the first time!");
             } else {
-
                 JOptionPane.showMessageDialog(this, "You are now watching " + c.title + "...");
             }
 
@@ -225,22 +223,38 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
             }
 
         }
-        if (e.getSource() == removeWatchLaterButton) {
+        if (e.getSource() == removeButton) {
             Content c = list.getSelectedValue();
             if (c == null) {
                 return;
             }
 
-            if(StreamingService.user.watchLater.contains(c)) {
-                StreamingService.user.watchLater.remove(c);
-                StreamingService.user.removeWatchLater(c.title);
-                selectedPanel.hide();
-                // update displayed content
-                if (genreCb.getSelectedIndex() == 0)
-                    listModelContent.filterTitle(searchField.getText());
-                else
-                    listModelContent.filterTitleGenre(searchField.getText(), (String)genreCb.getSelectedItem());
-                JOptionPane.showMessageDialog(this, "removed from 'watch later'");
+            if (cb.getSelectedIndex() == 3) {
+                if (StreamingService.user.watchLater.contains(c)) {
+                    StreamingService.user.watchLater.remove(c);
+                    StreamingService.user.removeWatchLater(c.title);
+                    selectedPanel.hide();
+                    // update displayed content
+                    if (genreCb.getSelectedIndex() == 0)
+                        listModelContent.filterTitle(searchField.getText());
+                    else
+                        listModelContent.filterTitleGenre(searchField.getText(), (String) genreCb.getSelectedItem());
+                    JOptionPane.showMessageDialog(this, "removed from 'watch later'");
+                }
+            } else {
+
+                if (StreamingService.user.watchAgain.contains(c)) {
+                    StreamingService.user.watchAgain.remove(c);
+                    StreamingService.user.removeContentWatched(c.title);
+                    selectedPanel.hide();
+                    // update displayed content
+                    if (genreCb.getSelectedIndex() == 0)
+                        listModelContent.filterTitle(searchField.getText());
+                    else
+                        listModelContent.filterTitleGenre(searchField.getText(), (String) genreCb.getSelectedItem());
+                    JOptionPane.showMessageDialog(this, "removed from 'watch again'");
+                }
+
             }
         }
     }
