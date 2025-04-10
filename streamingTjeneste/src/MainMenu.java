@@ -23,6 +23,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     private final JTextField searchField = new JTextField();
     private final JButton searchButton = new JButton("Search");
     private final JComboBox<String> cb;
+    private final JComboBox <String> genreList;
     private JComboBox<String> ratingCb;
     private JList<Content> list;
     private ContentListModel<Content> listModelContent = new ContentListModel<>();
@@ -60,7 +61,7 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         panelW.add(searchButton, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy =1;
         gbc.weightx = 0.5;
         String[] choices = {"Both", "Movies", "Series"};
         cb = new JComboBox<String>(choices);
@@ -72,6 +73,13 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
         ratingCb.addItemListener(this);
         gbc.gridx = 1;
         panelW.add(ratingCb, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        genreList = new JComboBox<>();
+        panelW.add(genreList,gbc);
+
+
 
         JPanel panelE = new JPanel();
         JPanel panelS = new JPanel();
@@ -158,7 +166,34 @@ public class MainMenu extends JPanel implements ActionListener, ListSelectionLis
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == searchButton) {
             selectedPanel.hide();
-            listModelContent.filterTitle(searchField.getText());
+            String query = searchField.getText().trim().toLowerCase();
+            String selectedGenre = genreList.getSelectedItem().toString().toLowerCase();
+            String selectedType = cb.getSelectedItem().toString(); // Both, Movies, Series
+
+            listModelContent.clear();
+
+            if (selectedType.equals("Both") || selectedType.equals("Movies")) {
+                for (Movies movie : movies) {
+                    boolean matchesQuery = movie.title.toLowerCase().contains(query);
+                    boolean matchesGenre = selectedGenre.equals("all") || movie.getMoviesGenre().toLowerCase().contains(selectedGenre);
+
+                    if (matchesQuery && matchesGenre) {
+                        listModelContent.addElement(movie);
+                    }
+                }
+            }
+
+            if (selectedType.equals("Both") || selectedType.equals("Series")) {
+                for (Series serie : series) {
+                    boolean matchesQuery = serie.title.toLowerCase().contains(query);
+                    boolean matchesGenre = selectedGenre.equals("all") || serie.getSeriesGenre().toLowerCase().contains(selectedGenre);
+
+                    if (matchesQuery && matchesGenre) {
+                        listModelContent.addElement(serie);
+                    }
+                }
+            }
+
         }
         if (e.getSource() == logoutButton) {
             StreamingService.user.save();

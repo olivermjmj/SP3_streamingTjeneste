@@ -41,4 +41,10 @@ public class ContentListModel <E extends Content> extends javax.swing.AbstractLi
         return (E) data.get(i);
     }
 
+    public void clear() {
+    }
+
+    public void addElement(E movie) {
+
+    }
 }
