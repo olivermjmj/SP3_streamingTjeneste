@@ -93,6 +93,11 @@ public class StartMenu extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         this.add(backgroud, BorderLayout.CENTER);
 
+        /*this.add(Box.createVerticalStrut(20));
+        this.add(chillLabel);
+        this.add(Box.createVerticalStrut(20));
+        this.add(inner);*/
+
 
 
 
